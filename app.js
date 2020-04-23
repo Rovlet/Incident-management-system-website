@@ -1,21 +1,7 @@
 const express = require('express');
 const path = require('path');
 const routes = require('./routes');
-const mysql = require('mysql');
-// const bodyParser = require('body-parser');
-
-// const connection = mysql.createConnection({
-// 	host: 'localhost',
-// 	user: 'root',
-// 	// password: 'password',
-// 	database: 'Strona',
-// 	multipleStatements: true
-// });
-
-// connection.connect(err => {
-// 	if (err) throw err;
-// 	console.log('Polaczone');
-// });
+// const mysql = require('mysql');
 
 const app = express();
 app.listen(3000, () => {
@@ -29,13 +15,28 @@ res.render("index.ejs");
 app.get("/login", function(req, res){
 res.render("login.ejs");
 });
-app.get("/notification", function(req, res){
-res.render("notification.ejs");
+app.get("/form", function(req, res){
+res.render("form.ejs");
+});
+
+app.get("/user_tree", function(req, res){
+res.render("user_tree.ejs");
+});
+
+app.get("/user_panel", function(req, res){
+res.render("user_panel.ejs");
+});
+
+app.get("/user_active", function(req, res){
+res.render("user_active.ejs");
+});
+
+app.get("/user_ended", function(req, res){
+res.render("user_ended.ejs");
 });
 
 // Set the default views directory to html folder
 app.set('views', path.join(__dirname, 'html'));
-// Set the folder for css & java scripts
 app.use(express.static(path.join(__dirname, 'css')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
