@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">   
+	<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>CSZI</title>
+	<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style_panel.css">
+	</head>	
+    <body class='background'>
+		<div class="contain">
+			 <div class="wrapper" style="padding: 0%">
+    <div class="contacts">
+		<div class="contacts-form">
+		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
+     <p class='information'>Zalogowany/na jako: Gość <br /> <br />
+		 Jeśli napotkałeś problem podczas zgłaszania incydentu możesz skontaktować się z nami poprzez: <br /> <br />
+			email: bezpieczneprzedsiebiorstwo@security.com <br /> <br />
+			telefon: 8000345000
+		</p>
+			<div class="buttons-area">
+				<div class="btn-area btn-form">
+        <a class ='btn' href='user_active'>Śledź zgłoszenia</a>
+        </div>
+		    <div class="btn-area btn-form">
+        <a class ='btn' href='user_ended' >Zakończone sprawy</a>
+        </div>
+		<div class="btn-area btn-form">
+        <a class ='btn' href='user_panel' >Wróć</a>
+        </div>
+		    <div class="btn-area btn-form">
+        <a class ='btn' href='https://projektzespolowy-eqoyl.run-eu-central1.goorm.io' >Wyloguj</a>
+        </div>
+	
+		</div>
+			</div>
+    	 <div class="space"></div>
+
+    </div>
+<div class="jumbotron small_font">
+   <!-- <div class="form noti-form">
+      <h3>Formularz</h3> -->
+      <form action="">
+        <p class="form-input">
+          <label for="">Osoba Zgłaszająca*</label>
+          <input type="text" placeholder="Imię i nazwisko">
+        </p>
+		<p class="form-input">
+          <label for="">Numer telefonu zgłaszającego*</label>
+          <input type="tel" id="phone" name="phone" placeholder='000-000-000' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+        </p>
+		  <p class="form-input">
+			  <label for="">Dostępność*</label> <br />
+				<select name= "dostepnosc">
+				<option value ="none">8-16</option>
+				<option value ="guava">8-22</option>
+				<option value ="lychee">24h</option>
+				</select> 
+		  </p>
+		  <p class="form-input">
+			  <label for="email">Email*:</label>
+			<input type="email" id="email" name="email">	
+		  </p>
+        <p class="form-input">
+          <label for="">Data i godzina stwierdzenia*</label>
+          <input type="datetime-local">
+        </p>
+        <p class="form-input">
+          <label for="">Data i godzina zaistnienia</label>
+          <input type="datetime-local">
+        </p>
+		  <p class="form-input">
+			  <label for="">Kategoria zdarzenia*</label>
+				<select name="Dostepnosc">
+				<option value ="none">Podejrzana wiadomość e-mail | podejrzane załączniki, phishing, szantaż</option>
+				<option value ="guava">Złośliwe oprogramowanie | trojan, banker, spyware, ransomware, zagrożenia mobilne</option>
+				<option value ="lychee">Oszustwa internetowe |fałszywa działalność w sieci, kradzież tożsamości</option>
+				<option value ="lychee">Włamania | serwer, aplikacja, konto, system, itp</option>
+				<option value ="lychee">Utrata dostępności usługi | DoS, DDoS, sabotaż, awaria, zaniedbanie, prace techniczne</option>
+				<option value ="lychee">Naruszenia bezpieczeństwa informacji | nieuprawniony dostęp do informacji, nieuprawniona zmiana informacji lub jej skasowania</option>
+				<option value ="lychee">Podatności | błędy w oprogramowaniu lub aplikacjach</option>
+				<option value ="lychee">Nielegalne treści</option>
+				<option value ="lychee">Cyberterroryzm | działania o charakterze terrorystycznym popełnione w sieci</option>
+				<option value ="lychee">Inne | wszystkie inne niewskazane powyżej</option>
+				</select> 
+		  </p>
+		<p class="form-input">
+          <label for="">Jakiego systemu lub aplikacji dotyczy incydent?</label>
+          <input type="text">
+        </p>
+		<p class="form-input">
+          <label for="">Czy czynnik wywołujący incydent (na przykład intruz albo oprogramowanie) zostal zidentyfikowany i czy jego działalność dalej trwa?</label>
+          <input type="text">
+        </p>
+        <p class="form-input">
+          <label for="">Czy incydent powtarzał się już przedtem?</label>
+          <input type="text">
+        </p>
+		<p class="form-input">
+          <label for="">Krótki opis konfiguracji sprzętowej komputera, jeśli jest on istotny dla diagnostyki i klasyfikacji incydentu</label>
+          <input type="text">
+        </p>
+		<p class="form-input full-width">
+          <label for="">Podjęte działania naprawcze</label>
+          <textarea class="bigger_text_area" name="" id="" cols="30" rows="7"></textarea>
+        </p>
+        <p class="form-input full-width">
+          <label for="">Opis incydentu*</label>
+          <textarea class="bigger_text_area" name="" id="" cols="30" rows="7"></textarea>
+        </p>
+		  <div class="buttons-area">
+		<div class="btn-area btn-case" margin='auto'>
+        <a class ='btn' href='user_panel' >Wyślij</a>
+        </div>
+		  </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    
+    </body>
+</html>
