@@ -1,6 +1,7 @@
 body {
 	background-color: RGB(22, 29, 42);
     font-family: 'Barlow Semi Condensed', sans-serif;
+	margin: 0;
 }
 
 .containerForm form{
