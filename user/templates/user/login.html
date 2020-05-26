@@ -1,0 +1,30 @@
+{% extends "html/base.html" %}
+{% block content %}
+    <div class="crumbs-area">
+        <div class="container">
+            <div class="row col-md-12 col-sm-10 col-xs-12 login">
+				<img src="https://www.cyberthreatalliance.org/wp-content/uploads/2017/10/home1@3x.png" class="security_logo">
+				<div class="login-page">
+  					<div class="form">
+   					 <form class="login-form" method="POST" action="{% url 'login' %}">
+                         {% csrf_token %}
+     					    <input type="text" name="username" placeholder="login"/>
+                            <input type="password" name="password" placeholder="hasło"/>
+                            <div class="btn-area" margin='3%'>
+                                <button type="submit" name="userlogin" class ='btn'>Zaloguj się jako użytkownik</button>
+             				</div>
+						 	<div class="btn-area" >
+                                <button type="submit" name="adminlogin" class ='btn'>Zaloguj się jako administrator</button>
+             				</div>
+							<div class="btn-area" >
+                                <button type="submit" name="conlogin" class ='btn'>Zaloguj się jako konsultant</button>
+             				</div>
+      						<p class='message'>Nie masz konta? Skontaktuj się z administratorem</p>
+    				</form>
+  					</div>
+				</div>
+               
+			</div>
+		</div>
+	</div>
+{% endblock %}

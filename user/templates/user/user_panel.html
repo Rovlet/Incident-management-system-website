@@ -1,0 +1,44 @@
+{% extends "user/base.html" %}
+{% block content %}
+		<div class="contain">
+
+  <div class="wrapper">
+    <div class="contacts">
+		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
+		     <p>Zalogowany/na jako: {{ user.get_username }}</p>
+            <p>Jeśli napotkałeś problem podczas zgłaszania incydentu możesz skontaktować się z nami poprzez:</p>
+		    <p>
+			    email: bezpieczneprzedsiebiorstwo@security.com
+		    </p><p>
+			    telefon: 8000345000
+		    </p>
+        <div class="btn-area" margin='3%'>
+            <a class ='btn' href='{% url 'user-active' %}'>Śledź zgłoszenia</a>
+        </div>
+        <div class="btn-area" >
+            <a class ='btn' href='{% url 'user-ended' %}'>Zakończone sprawy</a>
+        </div>
+        <div class="btn-area">
+            <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
+        </div>
+    </div>
+<div class="jumbotron">
+    <h2 class="h1-responsive">Witaj na stronie panelu użytkownika</h2>
+    <p class="lead">Za pomocą tej strony możesz zgłosić incydent bezpieczeństwa, przeglądać zakończone sprawy lub śledzić rozpoczęte sprawy.</p>
+    <hr class="my-2">
+    <p>W przypadku zgłoszenia nowego incydentu zalecamy wybranie opcji "Szybkie rozwiazywanie problemów" - za pomocą tej opcji wypełnisz którki kwestionariusz który może ułatwić rozwiązanie problemu.
+    </p>
+	<div class="buttons-area">
+		<div class="btn-area btn-dark">
+        <a class ='btn' href='{% url 'user-tree' %}' >Szybkie rozwiazywanie problemów</a>
+        </div>
+	<div class="btn-area btn-dark">
+    <a class ='btn' href='{% url 'form' %}' >Nowy formularz zgłoszeniowy</a>
+    </div>
+	</div>
+    
+</div>
+
+  </div>
+</div>
+{% endblock %}

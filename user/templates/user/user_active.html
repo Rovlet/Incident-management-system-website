@@ -1,0 +1,80 @@
+{% extends "user/base.html" %}
+{% block content %}
+		<div class="contain">
+
+  <div class="wrapper">
+    <div class="contacts">
+		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
+		<p>
+			Zalogowany/na jako: {{ user.get_username }}
+		</p>
+     <p>Jeśli napotkałeś problem podczas zgłaszania incydentu możesz skontaktować się z nami poprzez:</p>
+		<p>
+			email: bezpieczneprzedsiebiorstwo@security.com 
+		  </p><p>
+			telefon: 8000345000
+		  </p>
+		    <div class="btn-area">
+        <a class ='btn' href='{% url 'user-ended' %}'>Zakończone sprawy</a>
+        </div>
+		<div class="btn-area">
+        <a class ='btn' href='{% url 'user-panel' %}'>Wróć</a>
+        </div>
+		    <div class="btn-area">
+        <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
+        </div>
+    </div>
+		<div class="jumbotron">
+        {% if zgloszenia.count == 0 %}
+            <h2 class="h1-responsive">Brak aktywnych zgłoszeń do wyświetlenia</h2>
+            <hr class="my-2">
+        {% else %}
+    <h2 class="h1-responsive">Aktywne zgłoszenia do wyświetlenia</h2>
+    <hr class="my-2">
+            <div class = 'case-blocks'>
+                {% for zgloszenie in zgloszenia %}
+		<div class = 'case'>
+<div class='case-text'>
+
+				Incydent z dnia: {{ zgloszenie.data_zgloszenia }}
+<br />
+				Zgłoszony przez: {{ zgloszenie.id_uzytkownik.id_osoba.imie }} {{ zgloszenie.id_uzytkownik.id_osoba.nazwisko }}
+<br>
+                Status: {% if zgloszenie.czy_przyjete == 0 %}Niezaakceptowane{% else %}Zaakceptowane
+{% endif %}
+<br />
+
+</div>
+			<div>
+				<div class="btn-area btn-case" style="padding: 5px 5px;">
+        <a class ='btn' href="{% url 'user-more' zgloszenie.pk %}" style="padding: 10px;">Wyświetl szczegóły sprawy</a>
+        </div>
+			<div class="btn-area btn-case" style="padding: 5px 5px;">
+        <a class ='btn' href='' style="padding: 10px;">Wygeneruj raport</a>
+        </div>
+			</div>
+
+		</div>
+                {% endfor %}
+		</div>
+        {% endif %}
+        <div class="pagination" align="center">
+            {% if zgloszenia.has_previous %}
+            <a href="?page=1"><<<</a>
+            <a href="?page={{ zgloszenia.previous_page_number }}"><<</a>
+            {% endif %}
+            {% for num in zgloszenia.paginator.page_range %}
+                {% if zgloszenia.number == num %}
+                <strong>{{ num }}</strong>
+                {% elif num > zgloszenia.number|add:'-3' and num < zgloszenia.number|add:'3' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if zgloszenia.has_next %}
+                <a href="?page={{ zgloszenia.next_page_number }}">>></a>
+                <a href="?page={{ zgloszenia.paginator.num_pages }}">>>></a>
+            {% endif %}
+        </div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "user/base.html" %}
+{% block content %}
+		<div class="contain">
+			 <div class="wrapper" style="padding: 0%">
+    <div class="contacts">
+		<div class="contacts-form">
+		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
+     <p class='information'>Zalogowany/na jako: {{ user.get_username }} <br /> <br />
+		 Jeśli napotkałeś problem podczas zgłaszania incydentu możesz skontaktować się z nami poprzez: <br /> <br />
+			email: bezpieczneprzedsiebiorstwo@security.com <br /> <br />
+			telefon: 8000345000
+		</p>
+			<div class="buttons-area">
+				<div class="btn-area btn-form">
+        <a class ='btn' href='{% url 'user-active' %}'>Śledź zgłoszenia</a>
+        </div>
+		    <div class="btn-area btn-form">
+        <a class ='btn' href='{% url 'user-ended' %}' >Zakończone sprawy</a>
+        </div>
+		<div class="btn-area btn-form">
+        <a class ='btn' href='{% url 'user-panel' %}' >Wróć</a>
+        </div>
+		    <div class="btn-area btn-form">
+        <a class ='btn' href='https://projektzespolowy-eqoyl.run-eu-central1.goorm.io' >Wyloguj</a>
+        </div>
+	
+		</div>
+			</div>
+    	 <div class="space"></div>
+
+    </div>
+<div class="jumbotron small_font">
+   <!-- <div class="form noti-form">
+      <h3>Formularz</h3> -->
+      <form action="{% url 'form' %}" method="POST">{% csrf_token %}
+          <p class="form-input">
+			  <label for="email">Email*:</label>
+			<input type="email" id="email" name="email">
+		  </p>
+        <p class="form-input">
+          <label for="">Data i godzina stwierdzenia*</label>
+          <input type="datetime-local" name="datezgloszenia">
+        </p>
+        <p class="form-input">
+          <label for="">Data i godzina zaistnienia</label>
+          <input type="datetime-local" name="datewystapienia">
+        </p>
+		  <p class="form-input">
+			  <label for="">Kategoria zdarzenia*</label>
+				<select name="dostepnosc">
+				<option value ="1">Podejrzana wiadomość e-mail | podejrzane załączniki, phishing, szantaż</option>
+				<option value ="2">Złośliwe oprogramowanie | trojan, banker, spyware, ransomware, zagrożenia mobilne</option>
+				<option value ="3">Oszustwa internetowe |fałszywa działalność w sieci, kradzież tożsamości</option>
+				<option value ="4">Włamania | serwer, aplikacja, konto, system, itp</option>
+				<option value ="5">Utrata dostępności usługi | DoS, DDoS, sabotaż, awaria, zaniedbanie, prace techniczne</option>
+				<option value ="6">Naruszenia bezpieczeństwa informacji | nieuprawniony dostęp do informacji, nieuprawniona zmiana informacji lub jej skasowania</option>
+				<option value ="7">Podatności | błędy w oprogramowaniu lub aplikacjach</option>
+				<option value ="8">Nielegalne treści</option>
+				<option value ="9">Cyberterroryzm | działania o charakterze terrorystycznym popełnione w sieci</option>
+				<option value ="10">Inne | wszystkie inne niewskazane powyżej</option>
+				</select> 
+		  </p>
+		<p class="form-input">
+          <label for="">Jakiego systemu lub aplikacji dotyczy incydent?</label>
+          <input type="text" name="system">
+        </p>
+		<p class="form-input">
+          <label for="">Czy czynnik wywołujący incydent (na przykład intruz albo oprogramowanie) zostal zidentyfikowany i czy jego działalność dalej trwa?</label>
+          <input type="text" name="oprogramowanie">
+        </p>
+        <p class="form-input">
+          <label for="">Gdzie wystąpił incydent?</label>
+          <input type="text" name="gdzie">
+        </p>
+		<p class="form-input">
+          <label for="">Krótki opis konfiguracji sprzętowej komputera, jeśli jest on istotny dla diagnostyki i klasyfikacji incydentu</label>
+          <input type="text" name="podsiec">
+        </p>
+		<p class="form-input full-width">
+          <label for="">Podjęte działania naprawcze</label>
+          <textarea class="bigger_text_area" name="naprawa" id="" cols="30" rows="7"></textarea>
+        </p>
+        <p class="form-input full-width">
+          <label for="">Opis incydentu*</label>
+          <textarea class="bigger_text_area" name="opis" id="" cols="30" rows="7"></textarea>
+        </p>
+		  <div class="buttons-area">
+		<div class="btn-area btn-case" margin='auto'>
+        <button class ='btn' name="formularz" type="submit">Wyślij</button>
+        </div>
+		  </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

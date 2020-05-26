@@ -1,0 +1,81 @@
+{% extends "user/base.html" %}
+{% block content %}
+		<div class="contain">
+			 <div class="wrapper" style="padding: 0%">
+    <div class="contacts" style='background:rgb(0, 73, 73);'>
+		<div class="contacts-form">
+		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
+     <p class='information'>Zalogowany/na jako: {{ user.get_username }} <br /> <br />
+
+			<div class="buttons-area">
+				<div class="btn-area btn-form">
+        <a class ='btn' href='{% url 'cons-active' %}'>Aktywne zgłoszenia</a>
+        </div>
+		    <div class="btn-area btn-form">
+        <a class ='btn' href='{% url 'cons-ended' %}' >Zakończone sprawy</a>
+        </div>
+		<div class="btn-area btn-form">
+        <a class ='btn' href='{% url 'cons-panel' %}' >Wróć</a>
+        </div>
+		    <div class="btn-area btn-form">
+        <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
+        </div>
+	
+		</div>
+			</div>
+    	 <div class="space"></div>
+
+    </div>
+<div class="jumbotron small_font">
+   <!-- <div class="form noti-form">
+      <h3>Formularz</h3> -->
+      <form action="">
+        <p class="form-input">
+          <label for="">Imię i nazwisko</label>
+          <input type="text">
+        </p>
+        <p class="form-input">
+          <label for="">Data i godzina zakończenia incydentu</label>
+          <input type="datetime-local">
+        </p>
+			<p class="form-input">
+			  <label for="">Kategoria zdarzenia</label>
+				<select name="Dostepnosc">
+				<option value ="none">Podejrzana wiadomość e-mail | podejrzane załączniki, phishing, szantaż</option>
+				<option value ="guava">Złośliwe oprogramowanie | trojan, banker, spyware, ransomware, zagrożenia mobilne</option>
+				<option value ="lychee">Oszustwa internetowe |fałszywa działalność w sieci, kradzież tożsamości</option>
+				<option value ="lychee">Włamania | serwer, aplikacja, konto, system, itp</option>
+				<option value ="lychee">Utrata dostępności usługi | DoS, DDoS, sabotaż, awaria, zaniedbanie, prace techniczne</option>
+				<option value ="lychee">Naruszenia bezpieczeństwa informacji | nieuprawniony dostęp do informacji, nieuprawniona zmiana informacji lub jej skasowania</option>
+				<option value ="lychee">Podatności | błędy w oprogramowaniu lub aplikacjach</option>
+				<option value ="lychee">Nielegalne treści</option>
+				<option value ="lychee">Cyberterroryzm | działania o charakterze terrorystycznym popełnione w sieci</option>
+				<option value ="lychee">Inne | wszystkie inne niewskazane powyżej</option>
+				</select> 
+		  </p>
+		<p class="form-input full-width">
+          <label for="">Przebieg incydentu oraz możliwa przyczyna jego wystąpienia</label>
+          <textarea class="bigger_text_area" name="" id="" cols="30" rows="7"></textarea>
+        </p>
+		<p class="form-input full-width">
+          <label for="">Skutki oddziaływania incydentu na systemy informacyjne firmy/instytucji</label>
+          <textarea class="bigger_text_area" name="" id="" cols="30" rows="7"></textarea>
+        </p>
+	        <p class="form-input full-width">
+          <label for="">Podjęte działania zapobiegawcze</label>
+          <textarea class="bigger_text_area" name="" id="" cols="30" rows="7"></textarea>
+        </p>
+        <p class="form-input full-width">
+          <label for="">Inne istotne informacje</label>
+          <textarea class="bigger_text_area" name="" id="" cols="30" rows="7"></textarea>
+        </p>
+		  <div class="buttons-area">
+		<div class="btn-area btn-case" margin='auto'>
+        <a class ='btn' href='{% url 'cons-panel' %}' >Wyślij</a>
+        </div>
+		  </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

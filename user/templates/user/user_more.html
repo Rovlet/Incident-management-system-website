@@ -1,0 +1,36 @@
+{% extends "user/base.html" %}
+{% block content %}
+		<div class="contain">
+
+  <div class="wrapper">
+    <div class="contacts">
+		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
+		<p>
+			Zalogowany/na jako: {{ user.get_username }}
+		</p>
+     <p>Jeśli napotkałeś problem podczas zgłaszania incydentu możesz skontaktować się z nami poprzez:</p>
+		<p>
+			email: bezpieczneprzedsiebiorstwo@security.com 
+		  </p><p>
+			telefon: 8000345000
+		  </p>
+		    <div class="btn-area">
+        <a class ='btn' href='{% url 'user-ended' %}'>Zakończone sprawy</a>
+        </div>
+		<div class="btn-area">
+        <a class ='btn' href='{% url 'user-panel' %}'>Wróć</a>
+        </div>
+		    <div class="btn-area">
+        <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
+        </div>
+    </div>
+		<div class="jumbotron">
+    <h2 class="h1-responsive">Szczegóły sprawy</h2>
+    <hr class="my-2">
+            <p>Data przyjęcia sprawy: {{ sprawa.data_przyjecia }}</p>
+            <p>Data zamkniecia sprawy: {{ sprawa.data_zamkniecia }}</p>
+            <p>Status sprawy: {{ sprawa.id_status }}</p>
+            <p>Pracownik sprawy: {{ sprawa.id_pracownika }}</p>
+
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "html/base.html" %}
+{% block content %}
+    <div class="crumbs-area">
+        <div class="container">
+            <div class="row">
+					<img src="https://i.imgur.com/67ETElF.jpg" class="sky" align="right" alt="tak">
+                    <div class="crumbs-header">
+                        <h2 class="cd-headline letters rotate-3">
+                            <span class="cd-words-wrapper">
+                                <b class='title'>Witaj na stronie centralnego systemu zarządzania incydentami</b>
+                            </span>
+                        </h2>
+                        <p>Dalsza zawartość strony dostępna będzie po zalogowaniu się</p>
+                        <div class="btn-area">
+                            <a class ='btn' href='{% url 'login' %}' >Zaloguj się</a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
