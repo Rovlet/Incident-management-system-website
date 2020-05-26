@@ -16,14 +16,13 @@
             <a class ='btn' href='{% url 'cons-ended' %}'>Zakończone sprawy</a>
             </div>
             <div class="btn-area" margin='3%'>
-            <a class ='btn' href='{% url 'cons-active' %}'>Wróć</a>
+            <a class ='btn' href='{% url 'cons-ended' %}'>Wróć</a>
             </div>
                 <div class="btn-area" margin='3%'>
             <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
             </div>
         </div>
         <div class="jumbotron">
-        {% if detale.count != 0 %}
         <h2 class="h1-responsive">Szczegóły sprawy</h2>
         <hr class="my-2">
             <p>Narażona jednostka: {{ detale.narazona_jednostka }}</p>
@@ -36,10 +35,12 @@
             <p>Zastosowane środki bezpieczeństwa: {{ detale.srodki_bezpieczenstwa }}</p>
             <p>Lokalizacja: {{ detale.lokalizacja }}</p>
             <p>Informacje dodatkowe: {{ detale.informacje_dodatkowe }}</p>
-            <div class="btn-area btn-dark" align="center">
-                <a href="{% url 'cons-end' detale.pk %}" class='btn'>Zakończ sprawe</a>
-            </div>
-            {% endif %}
+            <p>Podmiot incydentu: {{ zrodlo.podmiot }}</p>
+            <p>Adresy ip źródła: {{ zrodlo.adresy_ip_zrodla }}</p>
+            <p>Cel ataku: {{ zrodlo.cel_ataku }}</p>
+            <p>Czy jest zagrozeniem: {{ zrodlo.czy_jest_zagrozeniem }}</p>
+            <p>Data wywolania: {{ zrodlo.data_wywolania }}</p>
+            <p>Opis sprawy: {{ sprawa.opis_sprawy }}</p>
 
   </div>
 {% endblock %}

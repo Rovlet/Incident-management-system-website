@@ -18,19 +18,24 @@
         <a class ='btn' href='{% url 'user-ended' %}'>Zakończone sprawy</a>
         </div>
 		<div class="btn-area">
-        <a class ='btn' href='{% url 'user-panel' %}'>Wróć</a>
+        <a class ='btn' href='{% url 'user-active' %}'>Wróć</a>
         </div>
 		    <div class="btn-area">
         <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
         </div>
     </div>
 		<div class="jumbotron">
-    <h2 class="h1-responsive">Szczegóły sprawy</h2>
-    <hr class="my-2">
-            <p>Data przyjęcia sprawy: {{ sprawa.data_przyjecia }}</p>
+            {% if sprawa is None %}
+                <h2 class="h1-responsive">Twoja sprawa nie została zaakceptowana</h2>
+                <hr class="my-2">
+                {% else %}
+                 <h2 class="h1-responsive">Szczegóły sprawy</h2>
+            <hr class="my-2">
+            <p>Data przyjęcia sprawy: {{ sprawa.data_przyjecia}}</p>
             <p>Data zamkniecia sprawy: {{ sprawa.data_zamkniecia }}</p>
             <p>Status sprawy: {{ sprawa.id_status }}</p>
             <p>Pracownik sprawy: {{ sprawa.id_pracownika }}</p>
 
+{% endif %}
 </div>
 {% endblock %}

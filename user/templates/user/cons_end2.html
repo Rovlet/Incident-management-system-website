@@ -16,20 +16,16 @@
             <a class ='btn' href='{% url 'cons-ended' %}'>Zakończone sprawy</a>
             </div>
             <div class="btn-area" margin='3%'>
-            <a class ='btn' href='{% url 'cons-active' %}'>Wróć</a>
+            <a class ='btn' href='{% url 'cons-panel' %}'>Wróć</a>
             </div>
                 <div class="btn-area" margin='3%'>
             <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
             </div>
         </div>
         <div class="jumbotron">
-    {% if sprawa.count != 0 %}
         <form method="POST">{% csrf_token %}
             {{ form.as_p }}
-        <button class ='button' type="submit">Dodaj szczegóły</button>
+        <button class ='button' type="submit">Dodaj źródło incydentu</button>
         </form>
-
-        {% endif %}
-
   </div>
 {% endblock %}

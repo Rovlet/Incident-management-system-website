@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
 from .models import Uzytkownik, Zgloszenie, RodzajZdarzenia, Priorytet, Status, PoziomIncydentu, Pracownik, Osoba, \
-    Sprawa, DetaleNarazonychSystemow
-from .forms import SprawaForm, DetaleForm
-
+    Sprawa, DetaleNarazonychSystemow, ZrodloIncydentu
+from .forms import SprawaForm, DetaleForm, ZrodloForm
+from datetime import datetime
 
 
 def loginview(request):
@@ -101,29 +101,66 @@ def cons_status(request, pk):
 @staff_member_required
 def cons_more(request, pk):
     zgloszenia = Zgloszenie.objects.get(idzgloszenie=pk)
+    priorytet = Priorytet.objects.get(waga=1)
     if zgloszenia.czy_przyjete == 1:
         sprawa = Sprawa.objects.get(id_zgloszenie=pk)
-        if DetaleNarazonychSystemow.objects.filter(id_sprawa=sprawa.idsprawa).exists():
-            detale = DetaleNarazonychSystemow.objects.get(id_sprawa=sprawa.idsprawa)
-            return render(request, "user/cons_more3.html", {'detale': detale})
-        else:
-            if request.POST:
-                form = DetaleForm(request.POST)
-                if form.is_valid():
-                    detale = form.save(commit=False)
-                    detale.id_sprawa = sprawa
-                    detale.save()
-                    return redirect('cons-panel')
+        if sprawa.id_priorytet == priorytet:
+            if DetaleNarazonychSystemow.objects.filter(id_sprawa=sprawa.idsprawa).exists():
+                detale = DetaleNarazonychSystemow.objects.get(id_sprawa=sprawa.idsprawa)
+                return render(request, "user/cons_more3.html", {'detale': detale})
             else:
-                form = DetaleForm()
-            return render(request, "user/cons_more2.html", {'form': form})
+                if request.POST:
+                    form = DetaleForm(request.POST)
+                    if form.is_valid():
+                        detale = form.save(commit=False)
+                        detale.id_sprawa = sprawa
+                        detale.save()
+                        return redirect('cons-panel')
+                else:
+                    form = DetaleForm()
+                return render(request, "user/cons_more2.html", {'form': form})
+        else:
+            return render(request, "user/cons_more4.html", {'sprawa': sprawa})
     else:
         return render(request, "user/cons_more.html", {'zgloszenia': zgloszenia})
 
 
 @staff_member_required
 def cons_ended(request):
-    return render(request, "user/cons_ended.html")
+    sprawa = Sprawa.objects.filter(id_status_id=2)
+    return render(request, "user/cons_ended.html", {'sprawa': sprawa})
+
+
+@staff_member_required
+def cons_endmore(request, pk):
+    sprawa = Sprawa.objects.get(idsprawa=pk)
+    detale = DetaleNarazonychSystemow.objects.get(id_sprawa=pk)
+    zrodlo = ZrodloIncydentu.objects.get(id_sprawa=pk)
+    return render(request, "user/cons_endmore.html", {'sprawa': sprawa, 'detale': detale, 'zrodlo': zrodlo})
+
+
+@staff_member_required
+def cons_end(request, pk):
+    detale = DetaleNarazonychSystemow.objects.get(iddetale_narazonych_systemow=pk)
+    sprawa = detale.id_sprawa
+    status = Status(idstatus=1)
+    if sprawa.id_priorytet_id == 2 and sprawa.id_status == status:
+        if request.POST:
+            form = ZrodloForm(request.POST)
+            if form.is_valid():
+                zrodlo = form.save(commit=False)
+                zrodlo.id_sprawa = sprawa
+                sprawa.id_status_id = 2
+                date = datetime.now()
+                sprawa.data_zamkniecia = date.strftime("%Y-%m-%d %H:%M:%S")
+                zrodlo.save()
+                sprawa.save()
+                return redirect('cons-panel')
+        else:
+            form = ZrodloForm()
+            return render(request, "user/cons_end2.html", {'form': form})
+    else:
+        return render(request, "user/cons_end.html")
 
 
 @staff_member_required
@@ -143,7 +180,10 @@ def user_active(request):
 
 @login_required
 def user_more(request, pk):
-    sprawa = Sprawa.objects.get(id_zgloszenie=pk)
+    try:
+        sprawa = Sprawa.objects.get(id_zgloszenie=pk)
+    except:
+        sprawa = None
     return render(request, "user/user_more.html", {'sprawa': sprawa})
 
 

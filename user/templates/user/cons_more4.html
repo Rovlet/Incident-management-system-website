@@ -23,13 +23,14 @@
             </div>
         </div>
         <div class="jumbotron">
-    {% if sprawa.count != 0 %}
-        <form method="POST">{% csrf_token %}
-            {{ form.as_p }}
-        <button class ='button' type="submit">Dodaj szczegóły</button>
-        </form>
-
-        {% endif %}
+        {% if sprawa.count != 0 %}
+        <h2 class="h1-responsive">Sprawa została przekazana administatorowi</h2>
+        <hr class="my-2">
+            <p>Data przyjęcia sprawy: {{ sprawa.data_przyjecia}}</p>
+            <p>Data zamkniecia sprawy: {{ sprawa.data_zamkniecia }}</p>
+            <p>Status sprawy: {{ sprawa.id_status }}</p>
+            <p>Pracownik sprawy: {{ sprawa.id_pracownika }}</p>
+            {% endif %}
 
   </div>
 {% endblock %}

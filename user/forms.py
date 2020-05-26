@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Uzytkownik, Sprawa, DetaleNarazonychSystemow
+from .models import Uzytkownik, Sprawa, DetaleNarazonychSystemow, ZrodloIncydentu
 
 class UzytkownikUserCreationForm(UserCreationForm):
 
@@ -24,6 +24,7 @@ class SprawaForm(forms.ModelForm):
             'data_przyjecia': forms.DateInput(attrs={'type': 'date'})
         }
 
+
 class DetaleForm(forms.ModelForm):
 
     class Meta:
@@ -31,3 +32,13 @@ class DetaleForm(forms.ModelForm):
         fields = ('narazona_jednostka', 'adresy_ip', 'nazwy_domen', 'podstawowe_funkcje', 'systemy_operacyjne',
                   'narazone_oprogramowanie', 'uzytkownicy_systemu', 'srodki_bezpieczenstwa', 'lokalizacja',
                   'informacje_dodatkowe',)
+
+
+class ZrodloForm(forms.ModelForm):
+
+    class Meta:
+        model = ZrodloIncydentu
+        fields = ('podmiot','adresy_ip_zrodla','cel_ataku','czy_jest_zagrozeniem','data_wywolania')
+        widgets = {
+            'data_wywolania': forms.DateTimeInput(attrs={'type': 'date'})
+        }
