@@ -26,54 +26,52 @@
 <div class="jumbotron">
     <h2 class="h1-responsive">Zakończone sprawy</h2>
     <hr class="my-2">
+    {% for sprawy in sprawa %}
 	<div class = 'case-blocks'>
 		<div class = 'case'>
 <div>
-	
-			
-				Incydent zgłoszony: 25.04.2020
+
+
+				Incydent zgłoszony: {{ sprawy.id_zgloszenie.data_zgloszenia }}
 <br />
-				Zgłoszony przez: Cyprian Michalak
+				Zgłoszony przez: {{ sprawy.id_zgloszenie.id_uzytkownik.id_osoba }}
 <br />
-				Nazwa incydentu: SYN flood
+				Skutki incydentu: {{ sprawy.skutki_incydentu }}
 <br />
-				Zakończony przez: Roman Kowalewski
+				Zakończony przez: {{ sprawy.id_pracownika }}
 <br />
-				Dnia: 26.04.2020
+				Dnia: {{ sprawy.data_zamkniecia }}
 <br />
 </div>
 			<div>
 			<div class="btn-area btn-case" style="padding: 5px 5px;">
-        <a class ='btn' style="padding: 10px;">Wyświetl szczegóły sprawy</a>
+        <a class ='btn' href="{% url 'cons-endmore' sprawy.pk %}" style="padding: 10px;">Wyświetl szczegóły sprawy</a>
         </div>
 			</div>
-	
-		</div>
-		<div class = 'case'>
-<div class='case-text'>
-	
-			
-				Incydent zgłoszony: 05.01.2020
-<br />
-				Zgłoszony przez: Cyprian Michalak
-<br />
-				Nazwa incydentu: Man in the middle attack
-<br />
-				Zakończony przez: Cyprian Michalak
-<br />
-				Dnia: 05.01.2020
-<br />
-</div>
-			<div>
-			<div class="btn-area btn-case" style="padding: 5px 5px;">
-        <a class ='btn' style="padding: 10px;">Wyświetl szczegóły sprawy</a>
-        </div>	
-			</div>
-			
+        </div>
+            {% endfor %}
+
+
 	</div>
 	</div>
-    
-</div>
+
+        <div class="pagination" align="center">
+            {% if sprawa.has_previous %}
+            <a href="?page=1"><<<</a>
+            <a href="?page={{ sprawa.previous_page_number }}"><<</a>
+            {% endif %}
+            {% for num in sprawa.paginator.page_range %}
+                {% if sprawa.number == num %}
+                <strong>{{ num }}</strong>
+                {% elif num > sprawa.number|add:'-3' and num < sprawa.number|add:'3' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if sprawa.has_next %}
+                <a href="?page={{ sprawa.next_page_number }}">>></a>
+                <a href="?page={{ sprawa.paginator.num_pages }}">>>></a>
+            {% endif %}
+        </div>
 
 </div>
 {% endblock %}

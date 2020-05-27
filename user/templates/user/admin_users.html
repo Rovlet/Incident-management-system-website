@@ -27,27 +27,51 @@
     <h2 class="h1-responsive">Użytkownicy</h2>
     <hr class="my-2">
 	<div class = 'case-blocks'>
+        {% for user in users %}
 		<div class = 'case'>
 			<div>
 		
-				Właściciel konta: Alina Kleczkowska
+				Właściciel konta: {{ user.id_osoba }}
 				<br />
-				Stanowkisko: Administrator
+				Stanowkisko: {% if user.id_osoba.pracownik.stanowisko %}
+                    {{ user.id_osoba.pracownik.stanowisko }}
+                {% else %}
+                Użytkownik
+                {% endif %}
+				<br />{% if user.id_osoba.pracownik.idpracownik %}
+				ID pracownika: {{ user.id_osoba.pracownik.idpracownik }}
+            {% endif %}
 				<br />
-				ID pracownika: DB200h54
-				<br />
-				Hasło: admin12345
 			</div>
 		<div>
 			<div class="btn-area btn-case" style="padding: 5px 5px;">
-        	<a class ='btn' style="padding: 10px;">Edytuj informacje</a>
+        	<a class ='btn' href="{% url 'admin-userpk' user.pk %}" style="padding: 10px;">Edytuj informacje</a>
         </div>
 			<div class="btn-area btn-case" style="padding: 5px 5px;">
         	<a class ='btn' style="padding: 10px;">Usuń konto</a>
         </div>
 	</div>
+
 	
 </div>
+                    {% endfor %}
+    <div class="pagination" align="center">
+            {% if users.has_previous %}
+            <a href="?page=1"><<<</a>
+            <a href="?page={{ users.previous_page_number }}"><<</a>
+            {% endif %}
+            {% for num in users.paginator.page_range %}
+                {% if users.number == num %}
+                <strong>{{ num }}</strong>
+                {% elif num > users.number|add:'-3' and num < users.number|add:'3' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+                <a href="?page={{ users.next_page_number }}">>></a>
+                <a href="?page={{ users.paginator.num_pages }}">>>></a>
+            {% endif %}
+        </div>
 
 </div>
 {% endblock %}

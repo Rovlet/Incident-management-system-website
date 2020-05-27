@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
 from .models import Uzytkownik, Zgloszenie, RodzajZdarzenia, Priorytet, Status, PoziomIncydentu, Pracownik, Osoba, \
-    Sprawa, DetaleNarazonychSystemow, ZrodloIncydentu
-from .forms import SprawaForm, DetaleForm, ZrodloForm
+    Sprawa, DetaleNarazonychSystemow, ZrodloIncydentu, Dzial
+from .forms import SprawaForm, DetaleForm, ZrodloForm, UzytkownikUserCreationForm, PracownikForm
 from datetime import datetime
 
 
@@ -45,17 +45,42 @@ def user_panel(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_active(request):
-    return render(request, "user/admin_active.html")
+    logged_sprawa = Sprawa.objects.filter(id_priorytet=1,id_status=1).order_by('id_status')
+    paginator = Paginator(logged_sprawa, 2)
+    page = request.GET.get('page')
+    logged_sprawa = paginator.get_page(page)
+    return render(request, "user/admin_active.html", {'sprawa': logged_sprawa})
 
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_ended(request):
-    return render(request, "user/admin_ended.html")
+    sprawa = Sprawa.objects.filter(id_status_id=2)
+    paginator = Paginator(sprawa, 2)
+    page = request.GET.get('page')
+    sprawa = paginator.get_page(page)
+    return render(request, "user/admin_ended.html", {'sprawa': sprawa})
 
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_new_user(request):
+    if request.POST:
+        imie = request.POST.get('imie')
+        nazwisko = request.POST.get('nazwisko')
+        Osoba.objects.create(imie=imie, nazwisko=nazwisko)
+        return redirect('admin-new-user2')
     return render(request, "user/admin_new_user.html")
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_new_user2(request):
+    if request.method == 'POST':
+        form = UzytkownikUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin-panel')
+    else:
+        form = UzytkownikUserCreationForm()
+    return render(request, "user/admin_new_user2.html", {'form': form})
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -65,12 +90,42 @@ def admin_raport(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_users(request):
-    return render(request, "user/admin_users.html")
+    users = Uzytkownik.objects.all().order_by('iduzytkownik')
+    paginator = Paginator(users, 2)
+    page = request.GET.get('page')
+    users = paginator.get_page(page)
+    return render(request, "user/admin_users.html", {'users': users})
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_userpk(request, pk):
+    users = Uzytkownik.objects.get(iduzytkownik=pk)
+    if request.POST:
+        form = PracownikForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data["id_dzial"] == Dzial(iddzial=2):
+                pracownik = form.save(commit=False)
+                pracownik.id_osoba = users.id_osoba
+                users.is_staff = True
+                pracownik.save()
+                users.save()
+                return redirect('admin-user')
+            elif form.cleaned_data["id_dzial"] == Dzial(iddzial=1):
+                pracownik = form.save(commit=False)
+                pracownik.id_osoba = users.id_osoba
+                users.is_staff = True
+                users.is_superuser = True
+                pracownik.save()
+                users.save()
+                return redirect('admin-user')
+    else:
+        form = PracownikForm()
+    return render(request, "user/admin_userpk.html", {'form': form})
 
 
 @staff_member_required
 def cons_active(request):
-    logged_zgloszenia = Zgloszenie.objects.all().order_by('idzgloszenie')
+    logged_zgloszenia = Zgloszenie.objects.all().order_by('czy_przyjete')
     paginator = Paginator(logged_zgloszenia, 2)
     page = request.GET.get('page')
     logged_zgloszenia = paginator.get_page(page)
@@ -128,6 +183,9 @@ def cons_more(request, pk):
 @staff_member_required
 def cons_ended(request):
     sprawa = Sprawa.objects.filter(id_status_id=2)
+    paginator = Paginator(sprawa, 2)
+    page = request.GET.get('page')
+    sprawa = paginator.get_page(page)
     return render(request, "user/cons_ended.html", {'sprawa': sprawa})
 
 
@@ -144,6 +202,8 @@ def cons_end(request, pk):
     detale = DetaleNarazonychSystemow.objects.get(iddetale_narazonych_systemow=pk)
     sprawa = detale.id_sprawa
     status = Status(idstatus=1)
+    user = request.user
+    pracownik = Pracownik(id_osoba=user)
     if sprawa.id_priorytet_id == 2 and sprawa.id_status == status:
         if request.POST:
             form = ZrodloForm(request.POST)
@@ -151,6 +211,7 @@ def cons_end(request, pk):
                 zrodlo = form.save(commit=False)
                 zrodlo.id_sprawa = sprawa
                 sprawa.id_status_id = 2
+                sprawa.id_pracownika = pracownik
                 date = datetime.now()
                 sprawa.data_zamkniecia = date.strftime("%Y-%m-%d %H:%M:%S")
                 zrodlo.save()

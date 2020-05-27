@@ -25,53 +25,55 @@
         </div>
     </div>
 <div class="jumbotron">
-     <h2 class="h1-responsive">Aktywne sprawy</h2>
+            {% if sprawa.count == 0 %}
+            <h2 class="h1-responsive">Brak aktywnych zgłoszeń do wyświetlenia</h2>
+            <hr class="my-2">
+        {% else %}
+    <h2 class="h1-responsive">Aktywnye zgłoszenia do wyświetlenia</h2>
     <hr class="my-2">
-	<div class = 'case-blocks'>
+            <div class = 'case-blocks'>
+                {% for sprawy in sprawa %}
 		<div class = 'case'>
 <div class='case-text'>
-	
-			
-				Incydent z dnia: 25.04.2020
+
+				Incydent z dnia: {{ sprawy.opis_sprawy }}
 <br />
-				Zgłoszony przez: Cyprian Michalak
+				Zgłoszony przez: {{ sprawy.id_zgloszenie.id_uzytkownik.id_osoba }}
+<br>
+                Status: Nierozwiązana
 <br />
 
 </div>
 			<div>
 				<div class="btn-area btn-case" style="padding: 5px 5px;">
-        <a class ='btn' style="padding: 10px;">Wyświetl szczegóły sprawy</a>
+        <a class ='btn' href="" style="padding: 10px;">Wyświetl szczegóły sprawy</a>
         </div>
 			<div class="btn-area btn-case" style="padding: 5px 5px;">
         <a class ='btn' href='{% url 'admin-raport' %}' style="padding: 10px;">Wygeneruj raport</a>
         </div>
 			</div>
-			
-	
-		</div>
-				<div class = 'case'>
-<div class='case-text'>
-	
-			
-				Incydent z dnia: 24.04.2020
-<br />
-				Zgłoszony przez: Eustachy Motyka
-<br />
 
-</div>
-			<div>
-				<div class="btn-area btn-case" style="padding: 5px 5px;">
-        <a class ='btn' style="padding: 10px;">Wyświetl szczegóły sprawy</a>
-        </div>
-			<div class="btn-area btn-case" style="padding: 5px 5px;">
-        <a class ='btn' style="padding: 10px;" href='{% url 'admin-raport' %}' >Wygeneruj raport</a>
-        </div>
-			</div>
-			
-	
 		</div>
-    
-</div>
+                {% endfor %}
+		</div>
+        {% endif %}
+        <div class="pagination" align="center">
+            {% if sprawa.has_previous %}
+            <a href="?page=1"><<<</a>
+            <a href="?page={{ sprawa.previous_page_number }}"><<</a>
+            {% endif %}
+            {% for num in sprawa.paginator.page_range %}
+                {% if sprawa.number == num %}
+                <strong>{{ num }}</strong>
+                {% elif num > sprawa.number|add:'-3' and num < sprawa.number|add:'3' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if sprawa.has_next %}
+                <a href="?page={{ sprawa.next_page_number }}">>></a>
+                <a href="?page={{ sprawa.paginator.num_pages }}">>>></a>
+            {% endif %}
+        </div>
 
   </div>
 {% endblock %}

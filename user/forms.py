@@ -1,12 +1,23 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Uzytkownik, Sprawa, DetaleNarazonychSystemow, ZrodloIncydentu
+from .models import Uzytkownik, Sprawa, DetaleNarazonychSystemow, ZrodloIncydentu, Pracownik
+
 
 class UzytkownikUserCreationForm(UserCreationForm):
 
     class Meta:
         model = Uzytkownik
-        fields = ('id_osoba',)
+        fields = ('username','password1','password2','id_osoba',)
+
+    def save(self, commit=True):
+        user = super(UzytkownikUserCreationForm, self).save(commit=False)
+        user.id_osoba = self.cleaned_data['id_osoba']
+
+        if commit:
+            user.save()
+
+        return user
+
 
 class UzytkownikUserChangeForm(UserChangeForm):
 
@@ -38,7 +49,14 @@ class ZrodloForm(forms.ModelForm):
 
     class Meta:
         model = ZrodloIncydentu
-        fields = ('podmiot','adresy_ip_zrodla','cel_ataku','czy_jest_zagrozeniem','data_wywolania')
+        fields = ('podmiot','adresy_ip_zrodla','cel_ataku','czy_jest_zagrozeniem','data_wywolania',)
         widgets = {
             'data_wywolania': forms.DateTimeInput(attrs={'type': 'date'})
         }
+
+
+class PracownikForm(forms.ModelForm):
+
+    class Meta:
+        model = Pracownik
+        fields = ('stanowisko','id_dzial',)

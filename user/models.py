@@ -117,6 +117,9 @@ class Dzial(models.Model):
     iddzial = models.SmallAutoField(db_column='idDzial', primary_key=True)  # Field name made lowercase.
     nazwa = models.CharField(max_length=45)
 
+    def __str__(self):
+        return self.nazwa
+
     class Meta:
         db_table = 'dzial'
 

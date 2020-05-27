@@ -7,7 +7,7 @@
     <div class="contacts"  style ='background: rgb(0, 73, 73);'>
 		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
 		<p>
-			Zalogowany/na jako: {{ user.get_username }}
+			Zalogowany/na jako: {{ user.id_osoba }}
 		</p>
 		<p>
 		Jeśli napotkałeś problemy zwiazane z działaniem strony możesz skontaktować się z nami poprzez: <br />
@@ -29,7 +29,7 @@
     {% for sprawy in sprawa %}
 	<div class = 'case-blocks'>
 		<div class = 'case'>
-<div>
+<div class='case-text'>
 
 
 				Incydent zgłoszony: {{ sprawy.id_zgloszenie.data_zgloszenia }}
@@ -48,11 +48,28 @@
         <a class ='btn' href="{% url 'cons-endmore' sprawy.pk %}" style="padding: 10px;">Wyświetl szczegóły sprawy</a>
         </div>
 			</div>
+        </div>
             {% endfor %}
 
 
-	</div>
-	</div>
-
+</div>
+        <div class="pagination" align="center">
+            {% if sprawa.has_previous %}
+            <a href="?page=1"><<<</a>
+            <a href="?page={{ sprawa.previous_page_number }}"><<</a>
+            {% endif %}
+            {% for num in sprawa.paginator.page_range %}
+                {% if sprawa.number == num %}
+                <strong>{{ num }}</strong>
+                {% elif num > sprawa.number|add:'-3' and num < sprawa.number|add:'3' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if sprawa.has_next %}
+                <a href="?page={{ sprawa.next_page_number }}">>></a>
+                <a href="?page={{ sprawa.paginator.num_pages }}">>>></a>
+            {% endif %}
+        </div>
+</div>
 </div>
 {% endblock %}

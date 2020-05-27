@@ -27,23 +27,10 @@
 
     </div>
 <div class="jumbotron small_font">
-   <!-- <div class="form noti-form">
-      <h3>Formularz</h3> -->
-      <form action="" method="POST">{% csrf_token %}
-          <p class="form-input">
-			  <label for="imie">Imię:</label>
-			<input type="text" id="imie" name="imie">
-		  </p>
-        <p class="form-input">
-          <label for="">Naziwsko</label>
-          <input type="text" name="nazwisko">
-        </p>
-		  <div class="buttons-area">
-		<div class="btn-area btn-case" margin='auto'>
-        <button class ='btn-case' name="formularz" type="submit">Wyślij</button>
-        </div>
-		  </div>
-      </form>
+   <form method="POST">{% csrf_token %}
+            {{ form.as_p }}
+        <button class ='button' type="submit">Dodaj użytkownika</button>
+        </form>
     </div>
   </div>
 </div>
