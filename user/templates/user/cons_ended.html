@@ -35,9 +35,11 @@
 				Incydent zgłoszony: {{ sprawy.id_zgloszenie.data_zgloszenia }}
 <br />
 				Zgłoszony przez: {{ sprawy.id_zgloszenie.id_uzytkownik.id_osoba }}
-<br />
-				Skutki incydentu: {{ sprawy.skutki_incydentu }}
-<br />
+<br />{% if sprawy.skutki_incydentu %}
+				Skutki incydentu:
+    {{ sprawy.skutki_incydentu }}
+
+<br />    {% endif %}
 				Zakończony przez: {{ sprawy.id_pracownika }}
 <br />
 				Dnia: {{ sprawy.data_zamkniecia }}

@@ -1,29 +1,31 @@
 {% extends "user/base.html" %}
 {% block content %}
-    <div class="contain">
+		<div class="contain">
 
-      <div class="wrapper">
-          <div class="contacts"  style ='background: rgb(0, 73, 73);'>
-            <img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
-            <p>
-                Zalogowany/na jako: {{ user.get_username }}
-            </p>
-                <p>
-            Jeśli napotkałeś problemy zwiazane z działaniem strony możesz skontaktować się z nami poprzez: <br />
-                email: bezpieczneprzedsiebiorstwo@security.com
-            </p>
-                <div class="btn-area" margin='3%'>
-            <a class ='btn' href='{% url 'cons-ended' %}'>Zakończone sprawy</a>
-            </div>
-            <div class="btn-area" margin='3%'>
-            <a class ='btn' href='{% url 'cons-active' %}'>Wróć</a>
-            </div>
-                <div class="btn-area" margin='3%'>
-            <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
-            </div>
+  <div class="wrapper">
+    <div class="contacts"  style ='background: rgb(101, 21, 49);'>
+		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
+		<p>
+			Zalogowany/na jako: {{ user.get_username }}
+		</p>
+     <p>Jeśli napotkałeś problemy zwiazane z działaniem strony możesz skontaktować się z nami poprzez:</p>
+		<p>
+			email: bezpieczneprzedsiebiorstwo@security.com
+		  </p><p>
+			telefon: 8000345000
+		  </p>
+		    <div class="btn-area">
+        <a class ='btn' href='{% url 'admin-ended' %}'>Zakończone sprawy</a>
         </div>
+		<div class="btn-area">
+        <a class ='btn' href='{% url 'admin-panel' %}'>Wróć</a>
+        </div>
+		    <div class="btn-area">
+        <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
+        </div>
+    </div>
         <div class="jumbotron">
-        {% if detale.count != 0 %}
+{% if detale.count != 0 %}
         <h2 class="h1-responsive">Szczegóły sprawy</h2>
         <hr class="my-2">
             <p>Narażona jednostka: {{ detale.narazona_jednostka }}</p>
@@ -37,12 +39,11 @@
             <p>Lokalizacja: {{ detale.lokalizacja }}</p>
             <p>Informacje dodatkowe: {{ detale.informacje_dodatkowe }}</p>
             <div class="btn-area btn-dark" align="center">
-                <a href="{% url 'cons-end' detale.pk %}" class='btn'>Zakończ sprawe</a>
+                <a href="{% url 'admin-end' detale.pk %}" class='btn'>Zakończ sprawe</a>
             </div>
             <div size="15" class="alert alert-danger">Zakończ sprawę tylko pod warunkiem, że udało się zdiagnozować źródło
                 incydentu!
             </div>
             {% endif %}
-
-  </div>
-{% endblock %}
+        </div>
+  {% endblock %}

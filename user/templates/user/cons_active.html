@@ -27,7 +27,7 @@
             <h2 class="h1-responsive">Brak aktywnych zgłoszeń do wyświetlenia</h2>
             <hr class="my-2">
         {% else %}
-    <h2 class="h1-responsive">Aktywnye zgłoszenia do wyświetlenia</h2>
+    <h2 class="h1-responsive">Aktywne zgłoszenia do wyświetlenia</h2>
     <hr class="my-2">
             <div class = 'case-blocks'>
                 {% for zgloszenie in zgloszenia %}
@@ -40,6 +40,8 @@
 <br>
                 Status: {% if zgloszenie.czy_przyjete == 0 %}Niezaakceptowane{% else %}Zaakceptowane
 {% endif %}
+<br />
+                Kontakt: {{ zgloszenie.id_uzytkownik.id_osoba.kontakt }}
 <br />
 
 </div>

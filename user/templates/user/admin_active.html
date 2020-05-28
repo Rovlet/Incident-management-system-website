@@ -36,17 +36,18 @@
 		<div class = 'case'>
 <div class='case-text'>
 
-				Incydent z dnia: {{ sprawy.opis_sprawy }}
+				Incydent z dnia: {{ sprawy.id_zgloszenie.data_wystapienia }}
 <br />
 				Zgłoszony przez: {{ sprawy.id_zgloszenie.id_uzytkownik.id_osoba }}
 <br>
-                Status: Nierozwiązana
+                Rodzaj zdarzenia: {{ sprawy.id_zgloszenie.id_rodzaj_zdarzenia.nazwa }}
 <br />
+                Kontakt: {{ sprawy.id_zgloszenie.id_uzytkownik.id_osoba.kontakt }}
 
 </div>
 			<div>
 				<div class="btn-area btn-case" style="padding: 5px 5px;">
-        <a class ='btn' href="" style="padding: 10px;">Wyświetl szczegóły sprawy</a>
+        <a class ='btn' href="{% url 'admin-more' sprawy.pk %}" style="padding: 10px;">Wyświetl szczegóły sprawy</a>
         </div>
 			<div class="btn-area btn-case" style="padding: 5px 5px;">
         <a class ='btn' href='{% url 'admin-raport' %}' style="padding: 10px;">Wygeneruj raport</a>

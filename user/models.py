@@ -184,9 +184,12 @@ class DetaleNarazonychSystemow(models.Model):
 
 class Kontakt(models.Model):
     idkontakt = models.AutoField(db_column='idKontakt', primary_key=True)  # Field name made lowercase.
-    id_osoba = models.ForeignKey(Osoba, models.DO_NOTHING, db_column='id_osoba')
+    id_osoba = models.OneToOneField(Osoba, models.DO_NOTHING, db_column='id_osoba')
     rodzaj_kontaktu = models.CharField(max_length=45)
     adres_kontaktowy = models.CharField(max_length=60)
+
+    def __str__(self):
+        return self.adres_kontaktowy
 
     class Meta:
         db_table = 'kontakt'

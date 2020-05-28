@@ -40,7 +40,7 @@
 <br />
 				Zgłoszony przez: {{ zgloszenie.id_uzytkownik.id_osoba.imie }} {{ zgloszenie.id_uzytkownik.id_osoba.nazwisko }}
 <br>
-                Status: {% if zgloszenie.czy_przyjete == 0 %}Niezaakceptowane{% else %}Zaakceptowane
+                Status: {% if zgloszenie.czy_przyjete == 0 %}Oczekuje na akceptacje przez pracownika{% else %}Zaakceptowane
 {% endif %}
 <br />
 
