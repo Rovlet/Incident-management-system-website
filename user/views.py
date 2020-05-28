@@ -125,7 +125,7 @@ def admin_active(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_ended(request):
-    sprawa = Sprawa.objects.filter(id_status_id=2)
+    sprawa = Sprawa.objects.filter(id_status_id=2).order_by('-data_zamkniecia')
     paginator = Paginator(sprawa, 2)
     page = request.GET.get('page')
     sprawa = paginator.get_page(page)
@@ -256,7 +256,7 @@ def cons_more(request, pk):
 
 @staff_member_required
 def cons_ended(request):
-    sprawa = Sprawa.objects.filter(id_status_id=2)
+    sprawa = Sprawa.objects.filter(id_status_id=2).order_by('-data_zamkniecia')
     paginator = Paginator(sprawa, 2)
     page = request.GET.get('page')
     sprawa = paginator.get_page(page)
