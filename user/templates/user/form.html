@@ -2,7 +2,7 @@
 {% block content %}
 		<div class="contain">
 			 <div class="wrapper" style="padding: 0%">
-    <div class="contacts">
+    <div class="contacts" style ='background: url(https://www.isf.es/wp-content/themes/enfold/images/background-images/noise-for-dark-background.png), #516f77;'>
 		<div class="contacts-form">
 		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
      <p class='information'>Zalogowany/na jako: {{ user.get_username }} <br /> <br />
@@ -23,9 +23,8 @@
 		    <div class="btn-area btn-form">
         <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
         </div>
-	
 		</div>
-			</div>
+        </div>
     	 <div class="space"></div>
 
     </div>

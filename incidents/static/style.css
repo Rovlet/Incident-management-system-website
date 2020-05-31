@@ -1,7 +1,9 @@
 body {
 	background-color: RGB(22, 29, 42);
+    background: url(https://www.isf.es/wp-content/themes/enfold/images/background-images/noise-for-dark-background.png), #7d9298;
     font-family: 'Barlow Semi Condensed', sans-serif;
 	margin: 0;
+    height: 100%;
 }
 
 .containerForm form{
@@ -13,11 +15,11 @@ body {
 
 .crumbs-area {
 	background: #0F0F0F;
-	height: 700px;
 	position: relative;
 	display: flex;
 	align-items: center;
 	padding-bottom: 40px;
+    height: 720px;
 }
 
 .crumbs-header {
@@ -58,6 +60,13 @@ body {
 .btn-area a:hover {
 	background-color: #444;
 	color: #fff;
+}
+
+button {
+    color: rgb(0, 17, 51);
+    width: auto;
+    box-shadow: 2px 4px rgba(0,0,0,.35);
+    padding: 10px 20px;
 }
 
 h1,
@@ -126,8 +135,8 @@ h1 {
 }
 
 .wrapper {
-	background: #0F0F0F;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+	height: 100%;
+    padding: 4%;
 }
 .wrapper > * {
   padding: 1em;
