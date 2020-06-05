@@ -4,9 +4,27 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
 from .models import Uzytkownik, Zgloszenie, RodzajZdarzenia, Priorytet, Status, PoziomIncydentu, Pracownik, Osoba, \
-    Sprawa, DetaleNarazonychSystemow, ZrodloIncydentu, Dzial, Kontakt
+    Sprawa, DetaleNarazonychSystemow, ZrodloIncydentu, Dzial, Kontakt, RodzajIncydentu, Pytanie, SciezkaPytan
 from .forms import SprawaForm, DetaleForm, ZrodloForm, UzytkownikUserCreationForm, PracownikForm
 from datetime import datetime
+from .render import Render
+from django.views.generic import View
+from django.utils import timezone
+
+class Pdf(View):
+    def get(self, request, pk):
+        sprawa = Sprawa.objects.get(idsprawa=pk)
+        detale = DetaleNarazonychSystemow.objects.get(id_sprawa=pk)
+        zrodlo = ZrodloIncydentu.objects.get(id_sprawa=pk)
+        today = timezone.now()
+        params = {
+            'today': today,
+            'sprawa': sprawa,
+            'detale': detale,
+            'zrodlo': zrodlo,
+            'request': request
+        }
+        return Render.render('user/pdf.html', params)
 
 
 def loginview(request):
@@ -155,11 +173,6 @@ def admin_new_user2(request):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def admin_raport(request):
-    return render(request, "user/admin_raport.html")
-
-
-@user_passes_test(lambda u: u.is_superuser)
 def admin_users(request):
     users = Uzytkownik.objects.all().order_by('iduzytkownik')
     paginator = Paginator(users, 2)
@@ -301,11 +314,6 @@ def cons_end(request, pk):
         return render(request, "user/cons_end.html")
 
 
-@staff_member_required
-def cons_raport(request):
-    return render(request, "user/cons_raport.html")
-
-
 @login_required
 def user_active(request):
     logged = request.user
@@ -337,13 +345,40 @@ def user_ended(request):
 
 
 @login_required
-def user_questions(request):
-    return render(request, "user/user_questions.html")
+def user_questions(request, pk):
+    if pk == 1:
+        sciezka = SciezkaPytan.objects.get(id_pytanie_id=1)
+        return render(request, "user/user_questions.html", {'sciezka': sciezka})
+    elif pk == 2:
+        sciezka = SciezkaPytan.objects.get(id_pytanie_id=11)
+        return render(request, "user/user_questions.html", {'sciezka': sciezka})
+    elif pk == 3:
+        sciezka = SciezkaPytan.objects.get(id_pytanie_id=21)
+        return render(request, "user/user_questions.html", {'sciezka': sciezka})
+    elif pk == 4:
+        sciezka = SciezkaPytan.objects.get(id_pytanie_id=26)
+        return render(request, "user/user_questions.html", {'sciezka': sciezka})
+    elif pk == 5:
+        sciezka = SciezkaPytan.objects.get(id_pytanie_id=30)
+        return render(request, "user/user_questions.html", {'sciezka': sciezka})
+    elif pk == 6:
+        sciezka = SciezkaPytan.objects.get(id_pytanie_id=46)
+        return render(request, "user/user_questions.html", {'sciezka': sciezka})
+
+
+@login_required
+def user_questions2(request, pk):
+    if pk == 10:
+        pytanie = Pytanie.objects.get(idpytanie=pk)
+        return render(request, "user/user_questions3.html", {'pytanie': pytanie})
+    sciezka = SciezkaPytan.objects.get(id_pytanie_id=pk)
+    return render(request, "user/user_questions2.html", {'sciezka': sciezka})
 
 
 @login_required
 def user_tree(request):
-    return render(request, "user/user_tree.html")
+    rodzaj = RodzajIncydentu.objects.all()
+    return render(request, "user/user_tree.html", {'rodzaj': rodzaj})
 
 
 @login_required

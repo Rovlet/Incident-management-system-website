@@ -66,7 +66,10 @@ class Zgloszenie(models.Model):
 
 class RodzajIncydentu(models.Model):
     idrodzaj_incydentu = models.SmallAutoField(db_column='idRodzaj_incydentu', primary_key=True)  # Field name made lowercase.
-    nazwa = models.CharField(max_length=45, blank=True, null=True)
+    nazwa = models.CharField(max_length=300, blank=True, null=True)
+
+    def __str__(self):
+        return self.nazwa
 
     class Meta:
         db_table = 'rodzaj_incydentu'
@@ -147,6 +150,7 @@ class Status(models.Model):
     class Meta:
         db_table = 'status'
 
+
 class Sprawa(models.Model):
     idsprawa = models.AutoField(db_column='idSprawa', primary_key=True)  # Field name made lowercase.
     id_priorytet = models.ForeignKey(Priorytet, models.DO_NOTHING, db_column='id_priorytet')
@@ -197,7 +201,7 @@ class Kontakt(models.Model):
 
 class Pytanie(models.Model):
     idpytanie = models.SmallAutoField(db_column='idPytanie', primary_key=True)  # Field name made lowercase.
-    tresc = models.CharField(max_length=45, blank=True, null=True)
+    tresc = models.CharField(max_length=300, blank=True, null=True)
 
     class Meta:
         db_table = 'pytanie'
@@ -205,9 +209,9 @@ class Pytanie(models.Model):
 
 class Odpowiedz(models.Model):
     idodpowiedz = models.AutoField(db_column='idOdpowiedz', primary_key=True)  # Field name made lowercase.
-    id_pytanie = models.ForeignKey(Pytanie, models.DO_NOTHING, db_column='id_pytanie', blank=True, null=True)
+    id_pytanie = models.OneToOneField(Pytanie, models.DO_NOTHING, db_column='id_pytanie', blank=True, null=True)
     odpowiedz = models.TextField(blank=True, null=True)  # This field type is a guess.
-    id_arkusz = models.ForeignKey(Arkusz, models.DO_NOTHING, db_column='id_arkusz', blank=True, null=True)
+    id_arkusz = models.OneToOneField(Arkusz, models.DO_NOTHING, db_column='id_arkusz', blank=True, null=True)
 
     class Meta:
         db_table = 'odpowiedz'
@@ -224,12 +228,12 @@ class Rozwiazanie(models.Model):
 
 class SciezkaPytan(models.Model):
     idsciezka_pytan = models.AutoField(db_column='idSciezka_pytan', primary_key=True)  # Field name made lowercase.
-    id_rodzaj_zdarzenia = models.ForeignKey(RodzajZdarzenia, models.DO_NOTHING, db_column='id_rodzaj_zdarzenia', blank=True, null=True)
-    id_pytanie = models.ForeignKey(Pytanie, models.DO_NOTHING, related_name='id_pytanie', db_column='id_pytanie', blank=True, null=True)
-    id_next_pytanie_jesli_tak = models.ForeignKey(Pytanie, models.DO_NOTHING, related_name='id_next_pytanie_jesli_tak',db_column='id_next_pytanie_jesli_tak', blank=True, null=True)
-    id_next_pytanie_jesli_nie = models.ForeignKey(Pytanie, models.DO_NOTHING, related_name='id_next_pytanie_jesli_nie',db_column='id_next_pytanie_jesli_nie', blank=True, null=True)
-    id_diagnoza_jesli_tak = models.ForeignKey(Diagnoza, models.DO_NOTHING, related_name='id_diagnoza_jesli_tak',db_column='id_diagnoza_jesli_tak', blank=True, null=True)
-    id_diagnoza_jesli_nie = models.ForeignKey(Diagnoza, models.DO_NOTHING, related_name='id_diagnoza_jesli_nie',db_column='id_diagnoza_jesli_nie', blank=True, null=True)
+    id_rodzaj_zdarzenia = models.OneToOneField(RodzajZdarzenia, models.DO_NOTHING, db_column='id_rodzaj_zdarzenia', blank=True, null=True)
+    id_pytanie = models.OneToOneField(Pytanie, models.DO_NOTHING, related_name='id_pytanie', db_column='id_pytanie', blank=True, null=True)
+    id_next_pytanie_jesli_tak = models.ForeignKey(Pytanie, models.DO_NOTHING, related_name='id_next_pytanie_jesli_tak', db_column='id_next_pytanie_jesli_tak', blank=True, null=True)
+    id_next_pytanie_jesli_nie = models.ForeignKey(Pytanie, models.DO_NOTHING, related_name='id_next_pytanie_jesli_nie', db_column='id_next_pytanie_jesli_nie', blank=True, null=True)
+    id_diagnoza_jesli_tak = models.OneToOneField(Diagnoza, models.DO_NOTHING, related_name='id_diagnoza_jesli_tak',db_column='id_diagnoza_jesli_tak', blank=True, null=True)
+    id_diagnoza_jesli_nie = models.OneToOneField(Diagnoza, models.DO_NOTHING, related_name='id_diagnoza_jesli_nie',db_column='id_diagnoza_jesli_nie', blank=True, null=True)
 
     class Meta:
         db_table = 'sciezka_pytan'
@@ -253,5 +257,7 @@ class ZrodloIncydentu(models.Model):
     czy_jest_zagrozeniem = models.BooleanField(blank=True, null=True)  # This field type is a guess.
     data_wywolania = models.DateTimeField(blank=True, null=True)
 
+
     class Meta:
         db_table = 'zrodlo_incydentu'
+

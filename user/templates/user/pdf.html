@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Raport sprawy</title>
+</head>
+<body>
+
+    <h3>Raport sprawy - {{ today | date:"d/m/Y" }}</h3>
+
+    <p>Imię i nazwisko: {{ sprawa.id_zgloszenie.id_uzytkownik.id_osoba }}</p>
+
+
+    <p>Narażona jednostka: {{ detale.narazona_jednostka }}</p>
+    <p>Adresy ip: {{ detale.adresy_ip }}</p>
+    <p>Nazwy domen: {{ detale.nazwy_domen }}</p>
+    <p>Podstawowe funkcje: {{ detale.podstawowe_funkcje }}</p>
+    <p>Systemy operacyjne: {{ detale.systemy_operacyjne }}</p>
+    <p>Narażone oprogramowanie: {{ detale.narazone_oprogramowanie }}</p>
+    <p>Użytkownicy systemu: {{ detale.uzytkownicy_systemu }}</p>
+    <p>Zastosowane środki bezpieczeństwa: {{ detale.srodki_bezpieczenstwa }}</p>
+    <p>Lokalizacja: {{ detale.lokalizacja }}</p>
+    <p>Informacje dodatkowe: {{ detale.informacje_dodatkowe }}</p>
+    <p>Podmiot incydentu: {{ zrodlo.podmiot }}</p>
+    <p>Adresy ip źródła: {{ zrodlo.adresy_ip_zrodla }}</p>
+    <p>Cel ataku: {{ zrodlo.cel_ataku }}</p>
+    <p>Czy jest zagrożeniem: {% if zrodlo.czy_jest_zagrozeniem == 1  %}
+        Tak
+        {% else %}
+        Nie
+    {% endif %}</p>
+    <p>Data wywołania: {{ zrodlo.data_wywolania }}</p>
+    <p>Opis sprawy: {{ sprawa.opis_sprawy }}</p>
+    <p>Data zakończenia sprawy: {{ sprawa.data_zamkniecia }}</p>
+    <p>Skutki incydentu: {{ sprawa.skutki_incydentu }}</p>
+
+</body>
+</html>

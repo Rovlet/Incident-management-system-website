@@ -3,7 +3,8 @@
 		<div class="contain">
 
   <div class="wrapper">
-    <div class="contacts">
+    <div class="contacts" style ='background: url(https://www.isf.es/wp-content/themes/enfold/images/background-images/noise-for-dark-background.png), #516f77'>
+        <div class="contacts-form">
 		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
 		<p>
 			Zalogowany/na jako: {{ user.get_username }}
@@ -21,6 +22,8 @@
 		    <div class="btn-area" margin='3%'>
         <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
         </div>
+            <div class="space"></div>
+              </div>
     </div>
 <div class="jumbotron">
     <h2 class="h1-responsive">Witaj na stronie szybkiego rozwiązywania incydentów</h2>
@@ -28,10 +31,25 @@
     <hr class="my-2">
 	<div class="buttons-area">
 		<div class="btn-area btn-dark">
-        <a class ='btn' >Przejdź do serii pytań</a>
+        <a class ='btn' href="{% url 'user-questions' rodzaj.0.pk %}">{{ rodzaj.0 }}</a>
+        </div>
+        <div class="btn-area btn-dark">
+        <a class ='btn' href="{% url 'user-questions' rodzaj.1.pk %}">{{ rodzaj.1 }}</a>
+        </div>
+        <div class="btn-area btn-dark">
+        <a class ='btn' href="{% url 'user-questions' rodzaj.2.pk %}">{{ rodzaj.2 }}</a>
+        </div>
+        <div class="btn-area btn-dark">
+        <a class ='btn' href="{% url 'user-questions' rodzaj.3.pk %}">{{ rodzaj.3 }}</a>
+        </div>
+        <div class="btn-area btn-dark">
+        <a class ='btn' href="{% url 'user-questions' rodzaj.4.pk %}">{{ rodzaj.4 }}</a>
+        </div>
+        <div class="btn-area btn-dark">
+        <a class ='btn' href="{% url 'user-questions' rodzaj.5.pk %}">{{ rodzaj.5 }}</a>
         </div>
 	<div class="btn-area btn-dark">
-    <a class ='btn' href='form' >Wypełnij formularz od razu</a>
+    <a class ='btn' href='{% url 'form' %}' >Wypełnij formularz od razu</a>
     </div>
 	</div>
     

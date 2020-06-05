@@ -4,7 +4,7 @@
 		<div class="contain">
 
   <div class="wrapper">
-    <div class="contacts">
+    <div class="contacts" style ='background: url(https://www.isf.es/wp-content/themes/enfold/images/background-images/noise-for-dark-background.png), #516f77;'>
 		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
 		<p>
 			Zalogowany/na jako: {{ user.get_username }}
@@ -24,15 +24,22 @@
         </div>
     </div>
 <div class="jumbotron">
-    <h2 class="h1-responsive">Witaj na stronie szybkiego rozwiązywania incydentów</h2>
-    <p class="lead">Strona ta powstała aby rozwiązywać najczęstrze incydenty proponując znane rozwiązania. Za chwile zostanie zadana Panu/Pani seria pytań o problemie a następnie zaproponowane rozwiazanie. Jeśli nie znajdziemy rozwiazania w naszej bazie to na końcu poprosimy o wypełnienie formularza.</p>
+    <h2 class="h1-responsive">Pytania</h2>
+    <p class="lead">Odpowiedz na pytania, jeżeli jest ono zadaniem, należy je wykonać w miare możliwości zaznaczyć Tak, jeżeli się nie uda proszę przejść do formularza</p>
     <hr class="my-2">
-	<div class="buttons-area">
-		<div class="btn-area btn-dark">
-        <a class ='btn' >Przejdź do serii pytań</a>
-        </div>
+
+    <p>{{ sciezka.id_pytanie.tresc }}</p>
+    <div class="buttons-area">
 	<div class="btn-area btn-dark">
-    <a class ='btn' href='form' >Wypełnij formularz od razu</a>
+    <a class ='btn' href='{% url 'user-questions2' sciezka.id_next_pytanie_jesli_tak.pk %}' >Tak</a>
+    </div>
+        {% if sciezka.id_next_pytanie_jesli_nie != 0 %}
+    <div class="btn-area btn-dark">
+    <a class ='btn' href='{% url 'user-questions2' sciezka.id_next_pytanie_jesli_nie.pk %}' >Nie</a>
+    </div>
+        {% endif %}
+     <div class="btn-area btn-dark">
+    <a class ='btn' href='{% url 'form' %}' >Wypełnij formularz</a>
     </div>
 	</div>
     
