@@ -24,8 +24,9 @@
         </div>
     </div>
 <div class="jumbotron">
-    <h2 class="h1-responsive">Pytania</h2>
-    <p class="lead">Odpowiedz na pytania, jeżeli jest ono zadaniem, należy je wykonać w miare możliwości zaznaczyć Tak, jeżeli się nie uda proszę przejść do formularza</p>
+    <h2 class="h1-responsive">Pytanie</h2>
+    <p class="lead">Odpowiedz na pytania, jeżeli jest ono zadaniem, należy je wykonać w miare możliwości i zaznaczyć opcję
+        Tak, jeżeli taka operacja się nie powiedzie proszę przejść do formularza</p>
     <hr class="my-2">
 
     <p>{{ sciezka.id_pytanie.tresc }}</p>
@@ -33,8 +34,9 @@
 	<div class="btn-area btn-dark">
     <a class ='btn' href='{% url 'user-questions2' sciezka.id_next_pytanie_jesli_tak.pk %}' >Tak</a>
     </div>
-        {% if sciezka.id_next_pytanie_jesli_nie != 0 %}
-    <div class="btn-area btn-dark">
+        {% if sciezka.id_next_pytanie_jesli_nie is NULL %}
+    {% else %}
+        <div class="btn-area btn-dark">
     <a class ='btn' href='{% url 'user-questions2' sciezka.id_next_pytanie_jesli_nie.pk %}' >Nie</a>
     </div>
         {% endif %}
