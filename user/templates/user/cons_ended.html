@@ -26,8 +26,6 @@
 		</div>
     	 <div class="space"></div>
     </div>
-    <div class="space"></div>
-    </div>
 <div class="jumbotron">
     <h2 class="h1-responsive">Zakończone sprawy</h2>
     <hr class="my-2">
@@ -45,8 +43,10 @@
     {{ sprawy.skutki_incydentu }}
 
 <br />    {% endif %}
+{% if sprawy.id_pracownika is not NULL %}
 				Zakończony przez: {{ sprawy.id_pracownika }}
-<br />
+    <br />
+{% endif %}
 				Dnia: {{ sprawy.data_zamkniecia }}
 <br />
 </div>

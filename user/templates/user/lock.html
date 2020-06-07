@@ -1,0 +1,22 @@
+{% extends "html/base.html" %}
+{% block content %}
+    <div class="crumbs-area">
+        <div class="container">
+            <div class="row col-md-12 col-sm-10 col-xs-12 login">
+				<img src="https://www.cyberthreatalliance.org/wp-content/uploads/2017/10/home1@3x.png" class="security_logo">
+				<div class="login-page">
+  					<div class="form">
+      						<p class='message'>Nie możesz zalogować się do konta, ponieważ wykonałeś za dużo prób
+                                logowania. Spróbuj się zalogować za 10 minut.</p>
+                        <div class="buttons-area">
+		<div class="btn-area btn-dark" margin='6%'>
+        <a class ='btn' href='{% url 'login' %}' >Zaloguj się</a>
+        </div>
+        </div>
+  					</div>
+				</div>
+               
+			</div>
+		</div>
+	</div>
+{% endblock %}

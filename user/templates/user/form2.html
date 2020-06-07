@@ -37,7 +37,7 @@
             </div>
         {% endfor %}
     {% endif %}
-      <form action="{% url 'form' %}" method="POST">{% csrf_token %}
+      <form method="POST">{% csrf_token %}
           <p class="form-input">
 			  <label for="email">Email*:</label>
 			<input type="email" id="email" name="email">
@@ -64,17 +64,21 @@
 		  <p class="form-input">
 			  <label for="">Kategoria zdarzenia*</label>
 				<select name="dostepnosc">
-				<option value ="1">Podejrzana wiadomość e-mail | podejrzane załączniki, phishing, szantaż</option>
-				<option value ="2">Złośliwe oprogramowanie | trojan, banker, spyware, ransomware, zagrożenia mobilne</option>
-				<option value ="3">Oszustwa internetowe |fałszywa działalność w sieci, kradzież tożsamości</option>
-				<option value ="4">Włamania | serwer, aplikacja, konto, system, itp</option>
-				<option value ="5">Utrata dostępności usługi | DoS, DDoS, sabotaż, awaria, zaniedbanie, prace techniczne</option>
-				<option value ="6">Naruszenia bezpieczeństwa informacji | nieuprawniony dostęp do informacji, nieuprawniona zmiana informacji lub jej skasowania</option>
-				<option value ="7">Podatności | błędy w oprogramowaniu lub aplikacjach</option>
-				<option value ="8">Nielegalne treści</option>
-				<option value ="9">Cyberterroryzm | działania o charakterze terrorystycznym popełnione w sieci</option>
-				<option value ="10">Inne | wszystkie inne niewskazane powyżej</option>
+				<option value ="11">Brute Force</option>
+				<option value ="12">SYN Flood</option>
+				<option value ="13">Malware</option>
+				<option value ="14">Man-in-the-middle</option>
+				<option value ="15">Phishing</option>
+				<option value ="16">Brak połączenia</option>
 				</select> 
+		  </p>
+          <p class="form-input">
+			  <label for="">Poziom incydentu*</label>
+				<select name="poziom">
+				<option value ="1">Krytyczny</option>
+				<option value ="2">Średni</option>
+				<option value ="3">Niski</option>
+				</select>
 		  </p>
 		<p class="form-input">
           <label for="">Jakiego systemu lub aplikacji dotyczy incydent?</label>

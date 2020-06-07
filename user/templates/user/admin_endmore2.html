@@ -1,12 +1,12 @@
 {% extends "user/base.html" %}
 {% block content %}
-		<div class="contain">
+    <div class="contain">
 
   <div class="wrapper">
     <div class="contacts"  style ='background: url(https://www.isf.es/wp-content/themes/enfold/images/background-images/noise-for-dark-background.png), #5f8c6c;'>
         <div class="contacts-form">
 		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
-		<p>
+         <p>
 			Zalogowany/na jako: {{ user.id_osoba }}
 		</p>
      <p>Jeśli napotkałeś problemy zwiazane z działaniem strony możesz skontaktować się z nami poprzez:</p>
@@ -15,21 +15,20 @@
 		  </p><p>
 			telefon: 8000345000
 		  </p>
-		    <div class="btn-area">
-        <a class ='btn' href='{% url 'admin-ended' %}'>Zakończone sprawy</a>
+    <div class="btn-area" margin='3%'>
+        <a class ='btn' href='{% url 'admin-active' %}'>Aktywne zgłoszenia</a>
         </div>
-		<div class="btn-area">
+		<div class="btn-area" margin='3%'>
         <a class ='btn' href='{% url 'admin-panel' %}'>Wróć</a>
         </div>
-		    <div class="btn-area">
+		    <div class="btn-area" margin='3%'>
         <a class ='btn' href='{% url 'logout' %}' >Wyloguj</a>
         </div>
     </div>
-          <div class="space"></div>
+      <div class="space"></div>
     </div>
-        <div class="jumbotron">
-        {% if sprawa.id_zgloszenie.count != 0 %}
-        <h2 class="h1-responsive">Szczegóły zgłoszenia</h2>
+<div class="jumbotron">
+    <h2 class="h1-responsive">Szczegóły zakończonej sprawy</h2>
         <hr class="my-2">
             <p>Opis zgłoszenia: {{ sprawa.id_zgloszenie.opis_zdarzenia }}</p>
             <p>Lokalizacja zdarzenia: {{ sprawa.id_zgloszenie.lokalizacja_zdarzenia }}</p>
@@ -39,14 +38,10 @@
             <p>Czy czynnik został zidentyfikowany: {{ sprawa.id_zgloszenie.nazwa_maszyny }}</p>
             <p>Krótki opis konfiguracji sprzętowej komputera: {{ sprawa.id_zgloszenie.podsiec }}</p>
             <p>Opis naprawy: {{ sprawa.id_zgloszenie.opis_naprawy }}</p>
-            <p>Email: {{ sprawa.id_zgloszenie.oprogramowanie }}</p>
             <p>System: {{ sprawa.id_zgloszenie.system_operacyjny }}</p>
+            <p>Opis sprawy: {{ sprawa.opis_sprawy }}</p>
+            <p>Data zakończenia sprawy: {{ sprawa.data_zamkniecia }}</p>
             <p>Poziom incydentu: {{ sprawa.id_poziom_incydentu }}</p>
-            <div class="btn-area" align="center">
-                <a class ='btn' href='{% url 'admin-more-details' sprawa.pk %}' >Dodaj detale sprawy</a>
-            </div>
-
-            {% endif %}
 
   </div>
 {% endblock %}

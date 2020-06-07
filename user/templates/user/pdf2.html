@@ -1,0 +1,44 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <style type="text/css">
+             @page { size: A4; margin: 1cm; }
+             @font-face {
+                font-family: "DejaVuSans";
+                src: url("e:/Python/Projects/Incident-management-system-website/incidents/static/fonts/DejaVuSans.ttf");
+            }
+
+            *, html {
+                font-family: "DejaVuSans";
+            }
+
+            html {
+                padding:10pt;
+            }
+    </style>
+    <title>Raport sprawy</title>
+</head>
+<body>
+
+    <h3>Raport sprawy - {{ today | date:"d/m/Y" }}</h3>
+
+    <p>Imię i nazwisko: {{ sprawa.id_zgloszenie.id_uzytkownik.id_osoba }}</p>
+
+
+    <p>Opis zgłoszenia: {{ sprawa.id_zgloszenie.opis_zdarzenia }}</p>
+    <p>Lokalizacja zdarzenia: {{ sprawa.id_zgloszenie.lokalizacja_zdarzenia }}</p>
+    <p>Data wystąpienia: {{ sprawa.id_zgloszenie.data_wystapienia }}</p>
+    <p>Data zgłoszenia: {{ sprawa.id_zgloszenie.data_zgloszenia }}</p>
+    <p>Rodzaj zdarzenia: {{ sprawa.id_zgloszenie.id_rodzaj_zdarzenia }}</p>
+    <p>Czy czynnik został zidentyfikowany: {{ sprawa.id_zgloszenie.nazwa_maszyny }}</p>
+    <p>Krótki opis konfiguracji sprzętowej komputera: {{ sprawa.id_zgloszenie.podsiec }}</p>
+    <p>Opis naprawy: {{ sprawa.id_zgloszenie.opis_naprawy }}</p>
+    <p>System: {{ sprawa.id_zgloszenie.system_operacyjny }}</p>
+    <p>Opis sprawy: {{ sprawa.opis_sprawy }}</p>
+    <p>Data zakończenia sprawy: {{ sprawa.data_zamkniecia }}</p>
+    <p>Poziom incydentu: {{ sprawa.id_poziom_incydentu }}</p>
+
+</body>
+</html>

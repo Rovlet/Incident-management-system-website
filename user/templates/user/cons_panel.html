@@ -4,7 +4,7 @@
   <div class="wrapper">
     <div class="contacts" style ='background: url("https://www.isf.es/wp-content/themes/enfold/images/background-images/noise-for-dark-background.png"), #0c5677;'>
 		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
-		     <p>Zalogowany/na jako: {{ user.get_username }}</p>
+		     <p>Zalogowany/na jako: {{ user.id_osoba }}</p>
     		<p>
 		Jeśli napotkałeś problemy zwiazane z działaniem strony możesz skontaktować się z nami poprzez: <br />
 			email: bezpieczneprzedsiebiorstwo@security.com
@@ -21,6 +21,13 @@
     <div class="space"></div>
     </div>
 <div class="jumbotron">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <h2 class="h1-responsive">Witaj na stronie panelu konsultanta</h2>
     <p class="lead">Za pomocą tej strony możesz wygenerować raport, przekazać sprawę administratorowi oraz przeglądać zakończone sprawy.</p>
     <hr class="my-2">

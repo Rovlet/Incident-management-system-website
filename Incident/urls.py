@@ -35,6 +35,7 @@ urlpatterns = [
     path('admin_panel/admin_new_user/admin_new_user2/', user_views.admin_new_user2, name='admin-new-user2'),
     path('admin_panel/admin_users/', user_views.admin_users, name='admin-user'),
     path('admin_panel/admin_users/<int:pk>/', user_views.admin_userpk, name='admin-userpk'),
+    path('admin_panel/admin_del/<int:pk>/', user_views.admin_del, name='admin-del'),
     path('cons_panel/', user_views.cons_panel, name='cons-panel'),
     path('cons_panel/cons_active/', user_views.cons_active, name='cons-active'),
     path('cons_panel/cons_active/cons_more/<int:pk>/', user_views.cons_more, name='cons-more'),

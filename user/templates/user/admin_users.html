@@ -6,7 +6,7 @@
     <div class="contacts"  style='background: url(https://www.isf.es/wp-content/themes/enfold/images/background-images/noise-for-dark-background.png), #5f8c6c;'>
 		<img src="https://i.imgur.com/0PkpIbm.png" class="security_logo">
 		<p>
-			Zalogowany/na jako: {{ user.get_username }}
+			Zalogowany/na jako: {{ user.id_osoba }}
 		</p>
      <p>Jeśli napotkałeś problemy zwiazane z działaniem strony możesz skontaktować się z nami poprzez:</p>
 		<p>
@@ -26,6 +26,13 @@
         </div>
     </div>
 <div class="jumbotron">
+{% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <h2 class="h1-responsive">Użytkownicy</h2>
     <hr class="my-2">
 	<div class = 'case-blocks'>
@@ -50,7 +57,7 @@
         	<a class ='btn' href="{% url 'admin-userpk' user.pk %}" style="padding: 10px;">Edytuj informacje</a>
         </div>
 			<div class="btn-area btn-case" style="padding: 5px 5px;">
-        	<a class ='btn' style="padding: 10px;">Usuń konto</a>
+        	<a class ='btn' href="{% url 'admin-del' user.pk %}" style="padding: 10px;">Usuń konto</a>
         </div>
 	</div>
 

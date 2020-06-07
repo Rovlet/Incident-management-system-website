@@ -130,8 +130,8 @@ class Dzial(models.Model):
 class Pracownik(models.Model):
     idpracownik = models.SmallAutoField(db_column='idPracownik', primary_key=True)  # Field name made lowercase.
     id_osoba = models.OneToOneField(Osoba, models.DO_NOTHING, db_column='id_osoba')
-    stanowisko = models.CharField(max_length=45, blank=True, null=True)
-    id_dzial = models.ForeignKey(Dzial, models.DO_NOTHING, db_column='id_dzial', blank=True, null=True)
+    stanowisko = models.CharField(max_length=45, blank=False, null=True)
+    id_dzial = models.ForeignKey(Dzial, models.DO_NOTHING, db_column='id_dzial', blank=False, null=True)
 
     def __str__(self):
         return self.id_osoba.imie + " " + self.id_osoba.nazwisko
@@ -154,15 +154,15 @@ class Status(models.Model):
 class Sprawa(models.Model):
     idsprawa = models.AutoField(db_column='idSprawa', primary_key=True)  # Field name made lowercase.
     id_priorytet = models.ForeignKey(Priorytet, models.DO_NOTHING, db_column='id_priorytet')
-    opis_sprawy = models.TextField(blank=True, null=True)
+    opis_sprawy = models.TextField(blank=False, null=True)
     id_zgloszenie = models.OneToOneField(Zgloszenie, models.DO_NOTHING, db_column='id_zgloszenie')
-    data_przyjecia = models.DateTimeField(blank=True, null=True)
+    data_przyjecia = models.DateTimeField(blank=False, null=True)
     id_status = models.ForeignKey(Status, models.DO_NOTHING, db_column='id_status')
     data_zamkniecia = models.DateTimeField(blank=True, null=True)
     skutki_incydentu = models.TextField(blank=True, null=True)
-    id_poziom_incydentu = models.ForeignKey(PoziomIncydentu, models.DO_NOTHING, db_column='id_poziom_incydentu', blank=True, null=True)
+    id_poziom_incydentu = models.ForeignKey(PoziomIncydentu, models.DO_NOTHING, db_column='id_poziom_incydentu', blank=False, null=True)
     raport_koncowy = models.TextField(blank=True, null=True)
-    id_pracownika = models.ForeignKey(Pracownik, models.DO_NOTHING, db_column='id_pracownika', blank=True, null=True)
+    id_pracownika = models.ForeignKey(Pracownik, models.DO_NOTHING, db_column='id_pracownika', blank=False, null=True)
 
     class Meta:
         db_table = 'sprawa'
@@ -171,16 +171,16 @@ class Sprawa(models.Model):
 class DetaleNarazonychSystemow(models.Model):
     iddetale_narazonych_systemow = models.AutoField(db_column='idDetale_narazonych_systemow', primary_key=True)  # Field name made lowercase.
     id_sprawa = models.ForeignKey(Sprawa, models.DO_NOTHING, db_column='id_sprawa')
-    narazona_jednostka = models.CharField(max_length=45, blank=True, null=True)
-    adresy_ip = models.CharField(max_length=45, blank=True, null=True)
-    nazwy_domen = models.CharField(max_length=45, blank=True, null=True)
-    podstawowe_funkcje = models.CharField(max_length=45, blank=True, null=True)
-    systemy_operacyjne = models.CharField(max_length=45, blank=True, null=True)
-    narazone_oprogramowanie = models.CharField(max_length=45, blank=True, null=True)
-    uzytkownicy_systemu = models.CharField(max_length=45, blank=True, null=True)
-    srodki_bezpieczenstwa = models.CharField(max_length=45, blank=True, null=True)
-    lokalizacja = models.CharField(max_length=45, blank=True, null=True)
-    informacje_dodatkowe = models.CharField(max_length=45, blank=True, null=True)
+    narazona_jednostka = models.CharField(max_length=300, blank=False, null=True)
+    adresy_ip = models.CharField(max_length=300, blank=True, null=True)
+    nazwy_domen = models.CharField(max_length=300, blank=True, null=True)
+    podstawowe_funkcje = models.CharField(max_length=300, blank=False, null=True)
+    systemy_operacyjne = models.CharField(max_length=300, blank=True, null=True)
+    narazone_oprogramowanie = models.CharField(max_length=300, blank=False, null=True)
+    uzytkownicy_systemu = models.CharField(max_length=300, blank=True, null=True)
+    srodki_bezpieczenstwa = models.CharField(max_length=300, blank=False, null=True)
+    lokalizacja = models.CharField(max_length=300, blank=False, null=True)
+    informacje_dodatkowe = models.CharField(max_length=300, blank=True, null=True)
 
     class Meta:
         db_table = 'detale_narazonych_systemow'
@@ -251,11 +251,11 @@ class SprawaIncydent(models.Model):
 class ZrodloIncydentu(models.Model):
     idzrodlo_incydentu = models.AutoField(db_column='idZrodlo_incydentu', primary_key=True)  # Field name made lowercase.
     id_sprawa = models.ForeignKey(Sprawa, models.DO_NOTHING, db_column='id_sprawa')
-    podmiot = models.CharField(max_length=45, blank=True, null=True)
-    adresy_ip_zrodla = models.CharField(max_length=45, blank=True, null=True)
-    cel_ataku = models.CharField(max_length=45, blank=True, null=True)
-    czy_jest_zagrozeniem = models.BooleanField(blank=True, null=True)  # This field type is a guess.
-    data_wywolania = models.DateTimeField(blank=True, null=True)
+    podmiot = models.CharField(max_length=300, blank=False)
+    adresy_ip_zrodla = models.CharField(max_length=300, blank=False, null=True)
+    cel_ataku = models.CharField(max_length=300, blank=False, null=True)
+    czy_jest_zagrozeniem = models.BooleanField(blank=False, null=True)  # This field type is a guess.
+    data_wywolania = models.DateTimeField(blank=False, null=True)
 
 
     class Meta:

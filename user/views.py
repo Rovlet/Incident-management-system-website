@@ -10,28 +10,41 @@ from datetime import datetime
 from .render import Render
 from django.views.generic import View
 from django.utils import timezone
+from django.contrib import messages
+from django.utils.decorators import method_decorator
 
+
+@method_decorator(login_required(login_url='/login/'), name='get')
 class Pdf(View):
     def get(self, request, pk):
         sprawa = Sprawa.objects.get(idsprawa=pk)
-        detale = DetaleNarazonychSystemow.objects.get(id_sprawa=pk)
-        zrodlo = ZrodloIncydentu.objects.get(id_sprawa=pk)
-        today = timezone.now()
-        params = {
-            'today': today,
-            'sprawa': sprawa,
-            'detale': detale,
-            'zrodlo': zrodlo,
-            'request': request
-        }
-        return Render.render('user/pdf.html', params)
+        if DetaleNarazonychSystemow.objects.filter(id_sprawa=pk).exists():
+            detale = DetaleNarazonychSystemow.objects.get(id_sprawa=pk)
+            zrodlo = ZrodloIncydentu.objects.get(id_sprawa=pk)
+            today = timezone.now()
+            params = {
+                'today': today,
+                'sprawa': sprawa,
+                'detale': detale,
+                'zrodlo': zrodlo,
+                'request': request
+            }
+            return Render.render('user/pdf.html', params)
+        else:
+            today = timezone.now()
+            params = {
+                'today': today,
+                'sprawa': sprawa,
+                'request': request
+            }
+            return Render.render('user/pdf2.html', params)
 
 
 def loginview(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request=request, username=username, password=password)
         if user is not None:
             login(request, user)
             # Redirect to a success page.
@@ -42,6 +55,7 @@ def loginview(request):
             if 'adminlogin' in request.POST:
                 return redirect('admin-panel')
         else:
+            messages.error(request, f'Nieprawidłowy login lub hasło!')
             return render(request, 'user/login.html', {})
     return render(request, 'user/login.html', {})
 
@@ -59,6 +73,26 @@ def cons_panel(request):
 @login_required
 def user_panel(request):
     return render(request, "user/user_panel.html")
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_del(request, pk):
+    users = Uzytkownik.objects.get(iduzytkownik=pk)
+    if request.method == 'POST':
+        if 'yes' in request.POST:
+            osoba = Osoba.objects.get(idosoba=users.id_osoba_id)
+            if Pracownik.objects.filter(id_osoba=osoba).exists():
+                Pracownik.objects.filter(id_osoba=osoba).delete()
+                osoba.delete()
+                users.delete()
+                messages.success(request, f'Poprawnie usunięto użytkownika!')
+                return redirect('admin-user')
+            else:
+                osoba.delete()
+                users.delete()
+                messages.success(request, f'Poprawnie usunięto użytkownika!')
+                return redirect('admin-user')
+    return render(request, "user/admin_del.html", {'users': users})
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -83,6 +117,7 @@ def admin_end(request, pk):
                 sprawa.data_zamkniecia = date.strftime("%Y-%m-%d %H:%M:%S")
                 zrodlo.save()
                 sprawa.save()
+                messages.success(request, f'Poprawnie zakończono sprawę!')
                 return redirect('admin-ended')
         else:
             form = ZrodloForm()
@@ -105,9 +140,12 @@ def admin_more(request, pk):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_endmore(request, pk):
     sprawa = Sprawa.objects.get(idsprawa=pk)
-    detale = DetaleNarazonychSystemow.objects.get(id_sprawa=pk)
-    zrodlo = ZrodloIncydentu.objects.get(id_sprawa=pk)
-    return render(request, "user/admin_endmore.html", {'sprawa': sprawa, 'detale': detale, 'zrodlo': zrodlo})
+    if DetaleNarazonychSystemow.objects.filter(id_sprawa=pk).exists():
+        detale = DetaleNarazonychSystemow.objects.get(id_sprawa=pk)
+        zrodlo = ZrodloIncydentu.objects.get(id_sprawa=pk)
+        return render(request, "user/admin_endmore.html", {'sprawa': sprawa, 'detale': detale, 'zrodlo': zrodlo})
+    else:
+        return render(request, "user/admin_endmore2.html", {'sprawa': sprawa})
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -126,6 +164,7 @@ def admin_more_details(request, pk):
                 detale = form.save(commit=False)
                 detale.id_sprawa = sprawa
                 detale.save()
+                messages.success(request, f'Poprawnie dodano detale sprawy!')
                 return redirect('admin-active')
         else:
             form = DetaleForm()
@@ -156,6 +195,7 @@ def admin_new_user(request):
         imie = request.POST.get('imie')
         nazwisko = request.POST.get('nazwisko')
         Osoba.objects.create(imie=imie, nazwisko=nazwisko)
+        messages.success(request, f'Poprawnie dodano osobę!')
         return redirect('admin-new-user2')
     return render(request, "user/admin_new_user.html")
 
@@ -166,6 +206,7 @@ def admin_new_user2(request):
         form = UzytkownikUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, f'Poprawnie dodano użytkownika!')
             return redirect('admin-panel')
     else:
         form = UzytkownikUserCreationForm()
@@ -193,6 +234,7 @@ def admin_userpk(request, pk):
                 users.is_staff = True
                 pracownik.save()
                 users.save()
+                messages.success(request, f'Poprawnie dodano pracownika!')
                 return redirect('admin-user')
             elif form.cleaned_data["id_dzial"] == Dzial(iddzial=1):
                 pracownik = form.save(commit=False)
@@ -201,6 +243,7 @@ def admin_userpk(request, pk):
                 users.is_superuser = True
                 pracownik.save()
                 users.save()
+                messages.success(request, f'Poprawnie dodano pracownika!')
                 return redirect('admin-user')
     else:
         form = PracownikForm()
@@ -231,6 +274,7 @@ def cons_status(request, pk):
             sprawa.id_pracownika = Pracownik.objects.get(id_osoba=osoba.idosoba)
             sprawa.save()
             zgloszen.save()
+            messages.success(request, f'Zgłoszenie zostało zaakceptowane!')
             return redirect('cons-panel')
     else:
         form = SprawaForm()
@@ -257,7 +301,8 @@ def cons_more(request, pk):
                         detale = form.save(commit=False)
                         detale.id_sprawa = sprawa
                         detale.save()
-                        return redirect('cons-panel')
+                        messages.success(request, f'Detale zostały poprawnie dodane')
+                        return redirect('cons-active')
                 else:
                     form = DetaleForm()
                 return render(request, "user/cons_more2.html", {'form': form})
@@ -279,9 +324,13 @@ def cons_ended(request):
 @staff_member_required
 def cons_endmore(request, pk):
     sprawa = Sprawa.objects.get(idsprawa=pk)
-    detale = DetaleNarazonychSystemow.objects.get(id_sprawa=pk)
-    zrodlo = ZrodloIncydentu.objects.get(id_sprawa=pk)
-    return render(request, "user/cons_endmore.html", {'sprawa': sprawa, 'detale': detale, 'zrodlo': zrodlo})
+    if DetaleNarazonychSystemow.objects.filter(id_sprawa=pk).exists():
+        detale = DetaleNarazonychSystemow.objects.get(id_sprawa=pk)
+        zrodlo = ZrodloIncydentu.objects.get(id_sprawa=pk)
+        return render(request, "user/cons_endmore.html", {'sprawa': sprawa, 'detale': detale, 'zrodlo': zrodlo})
+    else:
+        return render(request, "user/cons_endmore2.html", {'sprawa': sprawa})
+
 
 
 @staff_member_required
@@ -306,7 +355,11 @@ def cons_end(request, pk):
                 sprawa.data_zamkniecia = date.strftime("%Y-%m-%d %H:%M:%S")
                 zrodlo.save()
                 sprawa.save()
+                messages.success(request, f'Poprawnie zakończono sprawę!')
                 return redirect('cons-panel')
+            else:
+                messages.error(request, f'Nie wypełniono wszystkich pól!')
+                return redirect('cons-more', pk=pk)
         else:
             form = ZrodloForm()
             return render(request, "user/cons_end2.html", {'form': form})
@@ -371,6 +424,75 @@ def user_questions2(request, pk):
     if pk == 10:
         pytanie = Pytanie.objects.get(idpytanie=pk)
         return render(request, "user/user_questions3.html", {'pytanie': pytanie})
+    if pk == 9:
+        if request.method == "POST" and 'formularz' in request.POST:
+            if len(request.POST.get('email')) < 1 or len(request.POST.get('telefon')) < 1 or \
+                    len(request.POST.get('datezgloszenia')) < 1 or len(request.POST.get('opis')) < 1:
+                messages.error(request, f'Nie wypełniono wymaganych pól!')
+                redirect('form')
+            else:
+                telefon = request.POST.get('telefon')
+                rodzajkontaktu = request.POST.get('kontakt')
+                if rodzajkontaktu == "telefon2":
+                    rodzajkontaktu = "Telefon"
+                else:
+                    rodzajkontaktu = "Email"
+
+                if rodzajkontaktu == "Telefon":
+                    adres = telefon
+                else:
+                    adres = "email"
+
+                datazgloszenia = request.POST.get('datezgloszenia')
+                datawystapienia = request.POST.get('datewystapienia')
+                rodzajid = request.POST.get('dostepnosc')
+                poziomid = request.POST.get('poziom')
+                rodzaj = RodzajZdarzenia(idrodzaj_zdarzenia=rodzajid)
+                poziom = PoziomIncydentu(idpoziom_incydentu=poziomid)
+                system = request.POST.get('system')
+                oprogramowanie = request.POST.get('oprogramowanie')
+                gdzie = request.POST.get('gdzie')
+                podsiec = request.POST.get('podsiec')
+                naprawa = request.POST.get('naprawa')
+                opis = request.POST.get('opis')
+                id_uzyt = request.user
+                uzytk = Uzytkownik.objects.get(username=id_uzyt.username)
+                email = request.POST.get('email')
+                if Kontakt.objects.filter(id_osoba=uzytk.id_osoba).exists():
+                    zgloszenie = Zgloszenie.objects.create(id_uzytkownik=id_uzyt, opis_zdarzenia=opis, opis_naprawy=naprawa,
+                                              lokalizacja_zdarzenia=gdzie, data_wystapienia=datawystapienia,
+                                              data_zgloszenia=datazgloszenia, nazwa_maszyny=oprogramowanie,
+                                              system_operacyjny=system,
+                                              podsiec=podsiec, id_rodzaj_zdarzenia=rodzaj, oprogramowanie=email,
+                                              czy_przyjete=1)
+                    zgloszenie.save()
+                    date = datetime.now()
+                    Sprawa.objects.create(opis_sprawy=opis, data_przyjecia=date.strftime("%Y-%m-%d %H:%M:%S"),
+                                          data_zamkniecia=date.strftime("%Y-%m-%d %H:%M:%S"), id_poziom_incydentu=poziom,
+                                          id_status_id=2,id_zgloszenie_id=zgloszenie.pk, id_priorytet_id=3)
+                    messages.success(request, f'Zapisano sprawę! Raport można wygenerować w zakończonych sprawach')
+                    return render(request, "user/user_panel.html")
+                else:
+                    zgloszenie = Zgloszenie.objects.create(id_uzytkownik=id_uzyt, opis_zdarzenia=opis,
+                                                           opis_naprawy=naprawa,
+                                                           lokalizacja_zdarzenia=gdzie,
+                                                           data_wystapienia=datawystapienia,
+                                                           data_zgloszenia=datazgloszenia, nazwa_maszyny=oprogramowanie,
+                                                           system_operacyjny=system,
+                                                           podsiec=podsiec, id_rodzaj_zdarzenia=rodzaj,
+                                                           oprogramowanie=email,
+                                                           czy_przyjete=1)
+                    zgloszenie.save()
+                    date = datetime.now()
+                    Sprawa.objects.create(opis_sprawy=opis, data_przyjecia=date.strftime("%Y-%m-%d %H:%M:%S"),
+                                          data_zamkniecia=date.strftime("%Y-%m-%d %H:%M:%S"),
+                                          id_poziom_incydentu=poziom,
+                                          id_status_id=2, id_zgloszenie_id=zgloszenie.pk)
+                    Kontakt.objects.create(id_osoba=uzytk.id_osoba, rodzaj_kontaktu=rodzajkontaktu,
+                                           adres_kontaktowy=adres)
+                    messages.success(request, f'Zapisano sprawę! Raport można wygenerować w zakończonych sprawach')
+                    return render(request, "user/user_panel.html")
+        return render(request, "user/form2.html")
     sciezka = SciezkaPytan.objects.get(id_pytanie_id=pk)
     return render(request, "user/user_questions2.html", {'sciezka': sciezka})
 
@@ -385,7 +507,8 @@ def user_tree(request):
 def form(request):
     if request.method == "POST" and 'formularz' in request.POST:
         if len(request.POST.get('email')) < 1 or len(request.POST.get('telefon')) < 1 or \
-                len(request.POST.get('datezgloszenia')) or len(request.POST.get('opis')) < 1:
+                len(request.POST.get('datezgloszenia')) < 1 or len(request.POST.get('opis')) < 1:
+            messages.error(request, f'Nie wypełniono wymaganych pól!')
             redirect('form')
         else:
             telefon = request.POST.get('telefon')
@@ -411,14 +534,25 @@ def form(request):
             naprawa = request.POST.get('naprawa')
             opis = request.POST.get('opis')
             id_uzyt = request.user
-            uzytk = Uzytkownik.objects.get(iduzytkownik=id_uzyt.id)
+            uzytk = Uzytkownik.objects.get(username=id_uzyt.username)
             email = request.POST.get('email')
-            Zgloszenie.objects.create(id_uzytkownik=id_uzyt,opis_zdarzenia=opis,opis_naprawy=naprawa,
-                                      lokalizacja_zdarzenia=gdzie,data_wystapienia=datawystapienia,
-                                      data_zgloszenia=datazgloszenia,nazwa_maszyny=oprogramowanie,system_operacyjny= system,
-                                      podsiec=podsiec, id_rodzaj_zdarzenia=rodzaj, oprogramowanie=email)
-            Kontakt.objects.create(id_osoba=uzytk.id_osoba,rodzaj_kontaktu=rodzajkontaktu,adres_kontaktowy=adres)
-            return render(request, "user/user_panel.html")
+            if Kontakt.objects.filter(id_osoba=uzytk.id_osoba).exists():
+                Zgloszenie.objects.create(id_uzytkownik=id_uzyt, opis_zdarzenia=opis, opis_naprawy=naprawa,
+                                          lokalizacja_zdarzenia=gdzie, data_wystapienia=datawystapienia,
+                                          data_zgloszenia=datazgloszenia, nazwa_maszyny=oprogramowanie,
+                                          system_operacyjny=system,
+                                          podsiec=podsiec, id_rodzaj_zdarzenia=rodzaj, oprogramowanie=email)
+                messages.success(request, f'Zgłoszenie zostało wysłane!')
+                return render(request, "user/user_panel.html")
+            else:
+                Zgloszenie.objects.create(id_uzytkownik=id_uzyt, opis_zdarzenia=opis, opis_naprawy=naprawa,
+                                          lokalizacja_zdarzenia=gdzie, data_wystapienia=datawystapienia,
+                                          data_zgloszenia=datazgloszenia, nazwa_maszyny=oprogramowanie,
+                                          system_operacyjny=system,
+                                          podsiec=podsiec, id_rodzaj_zdarzenia=rodzaj, oprogramowanie=email)
+                Kontakt.objects.create(id_osoba=uzytk.id_osoba,rodzaj_kontaktu=rodzajkontaktu,adres_kontaktowy=adres)
+                messages.success(request, f'Zgłoszenie zostało wysłane!')
+                return render(request, "user/user_panel.html")
     return render(request, "user/form.html")
 
 
@@ -426,3 +560,5 @@ def form(request):
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+

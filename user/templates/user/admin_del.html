@@ -26,23 +26,14 @@
     	 <div class="space"></div>
 
     </div>
-<div class="jumbotron small_font">
-   <!-- <div class="form noti-form">
-      <h3>Formularz</h3> -->
+<div class="jumbotron">
+    <h2 class="h1-responsive">Czy na pewno chcesz usunąć użytkownika {{ users.username }}</h2>
+    <hr class="my-2">
       <form action="" method="POST">{% csrf_token %}
-          <p class="form-input">
-			  <label for="imie">Imię:</label>
-			<input type="text" id="imie" name="imie">
-		  </p>
-        <p class="form-input">
-          <label for="">Naziwsko</label>
-          <input type="text" name="nazwisko">
-        </p>
-		  <div class="buttons-area">
-		<div class="btn-area btn-case" margin='auto'>
-        <button class ='btn-case' name="formularz" type="submit">Wyślij</button>
-        </div>
-		  </div>
+        <div class="btn-area">
+        <button class ='btn-case' type="submit" name="yes">Tak</button>
+            <button class ='btn-case' type="submit" name="no">Nie</button>
+          </div>
       </form>
     </div>
   </div>
